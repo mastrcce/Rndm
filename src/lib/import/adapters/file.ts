@@ -1,5 +1,5 @@
 import Papa from "papaparse";
-import { LOCATION_TYPES, type LocationType, type RawMilkStatus } from "../../categories";
+import { CATEGORIES, LOCATION_TYPES, type Category, type LocationType, type RawMilkStatus } from "../../categories";
 import { stateForPoint } from "../../state-lookup";
 import { stateByName } from "../../states";
 import { nearestPlace } from "../nearest-place";
@@ -32,6 +32,7 @@ const ALIASES: Record<string, string[]> = {
   description: ["description", "beschreibung"],
   notes: ["notes", "hinweise", "hinweis"],
   raw_milk: ["raw_milk", "rohmilch"],
+  categories: ["categories", "kategorien", "produkte", "products"],
   organic: ["organic", "bio"],
   image_url: ["image_url", "bild", "image"],
   source_url: ["source_url", "quelle_url", "link"],
@@ -48,6 +49,8 @@ const TYPE_ALIASES: Record<string, LocationType> = {
   bauernhof: "farm",
   hof: "farm",
   direktverkauf: "direct_sale",
+  imker: "beekeeper",
+  imkerei: "beekeeper",
   sonstige: "direct_sale",
 };
 
@@ -75,6 +78,21 @@ function yesNo(v: string | null): boolean | null {
   if (/^(ja|yes|true|1|x)$/i.test(v)) return true;
   if (/^(nein|no|false|0)$/i.test(v)) return false;
   return null;
+}
+
+const CATEGORY_ALIASES: Record<string, Category> = {
+  milch: "milk", milk: "milk", rohmilch: "milk",
+  eier: "eggs", ei: "eggs", eggs: "eggs", egg: "eggs",
+  honig: "honey", honey: "honey",
+  fleisch: "meat", wurst: "meat", "fleisch & wurst": "meat", meat: "meat", sausage: "meat",
+  käse: "cheese", kaese: "cheese", cheese: "cheese",
+};
+
+/** „Milch|Eier, Honig“ -> ["milk","eggs","honey"]. Ohne Angabe: Milch (Rückwärtskompatibilität). */
+export function parseCategories(v: string | null): Category[] {
+  if (!v) return ["milk"];
+  const found = new Set(v.split(/[;,|/]/).map((x) => CATEGORY_ALIASES[x.trim().toLowerCase()]).filter(Boolean));
+  return CATEGORIES.filter((c) => found.has(c));
 }
 
 function parseType(v: string | null): LocationType {
@@ -137,8 +155,11 @@ export function fileToRecords(
     const name = pick(row, "name");
     const raw = yesNo(pick(row, "raw_milk"));
     const rawMilkStatus: RawMilkStatus = raw === true ? "confirmed" : raw === false ? "not_raw" : "unconfirmed";
-    if (rawMilkStatus === "not_raw") {
-      skip("keine Rohmilch laut Datei");
+    let categories = parseCategories(pick(row, "categories"));
+    if (raw === true && !categories.includes("milk")) categories = ["milk", ...categories];
+    if (rawMilkStatus === "not_raw") categories = categories.filter((c) => c !== "milk");
+    if (categories.length === 0) {
+      skip("keine passende Produktkategorie");
       return;
     }
     const hours = pick(row, "opening_hours");
@@ -170,7 +191,8 @@ export function fileToRecords(
       locationType: type,
       salesTypes: type === "raw_milk_vending" || type === "vending_machine" ? ["automat"] : type === "farm_shop" ? ["hofladen", "direktverkauf"] : ["direktverkauf"],
       rawMilkStatus,
-      products: ["milk"],
+      categories,
+      products: [...categories],
       description: pick(row, "description"),
       notes: pick(row, "notes"),
       phone: pick(row, "phone"),

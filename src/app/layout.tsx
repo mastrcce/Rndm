@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     template: "%s | Rohmilch-Atlas",
   },
   description:
-    "Finde frische Rohmilch in deiner Nähe: Rohmilchautomaten, Milchtankstellen, Hofläden und Bauernhöfe in ganz Deutschland auf einer Karte – mit Öffnungszeiten, Adressen und Navigation.",
+    "Finde frische Rohmilch in deiner Nähe: Rohmilchautomaten, Milchtankstellen, Hofläden und Bauernhöfe in ganz Deutschland auf einer Karte – dazu Eier, Honig, Fleisch und Käse direkt vom Hof. Mit Öffnungszeiten, Adressen und Navigation.",
   applicationName: "Rohmilch-Atlas",
   openGraph: {
     type: "website",

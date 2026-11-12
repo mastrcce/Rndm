@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Input, Label, Select, Textarea } from "@/components/ui/input";
-import { LOCATION_TYPE_LABELS, LOCATION_TYPES } from "@/lib/categories";
+import { CATEGORIES, CATEGORY_LABELS, LOCATION_TYPE_LABELS, LOCATION_TYPES } from "@/lib/categories";
 import type { LocationDetail } from "@/lib/types";
 
 /** Formular für Anlage/Bearbeitung (Server-Komponente, nutzt Server Action). */
@@ -21,6 +21,17 @@ export function LocationForm({ action, location, submitLabel }: { action: (form:
           {LOCATION_TYPES.map((t) => <option key={t} value={t}>{LOCATION_TYPE_LABELS[t]}</option>)}
         </Select>
       </div>
+      <fieldset className="sm:col-span-2">
+        <legend className="mb-1 text-sm font-medium text-forest-900">Produkte (mindestens eines)</legend>
+        <div className="flex flex-wrap gap-x-5 gap-y-2">
+          {CATEGORIES.map((c) => (
+            <label key={c} className="inline-flex items-center gap-2 text-sm">
+              <input type="checkbox" name="categories" value={c} defaultChecked={l ? l.categories.includes(c) : c === "milk"} className="size-4 accent-forest-800" />
+              {CATEGORY_LABELS[c]}
+            </label>
+          ))}
+        </div>
+      </fieldset>
       <div>
         <Label htmlFor="raw_milk_status">Rohmilch</Label>
         <Select id="raw_milk_status" name="raw_milk_status" defaultValue={l?.rawMilkStatus ?? "unconfirmed"}>

@@ -3,7 +3,7 @@ import path from "node:path";
 import { stateForPoint } from "../../state-lookup";
 import type { AdapterResult, ImportLogger, SourceRecord } from "../types";
 import { nearestPlace } from "../nearest-place";
-import { milkEvidence, normalizeOsm, type OsmElement } from "./osm-normalize";
+import { normalizeOsm, productCategories, type OsmElement } from "./osm-normalize";
 
 /**
  * OpenStreetMap-Adapter.
@@ -14,7 +14,7 @@ import { milkEvidence, normalizeOsm, type OsmElement } from "./osm-normalize";
  *  1. `overpass`  – Live-Abfrage der Overpass-API (nur Deutschland, nur Milch-relevante Tags)
  *  2. `snapshot`  – lokaler Klon des Open-Source-Repositorys von farmshops.eu
  *                   (github.com/CodeforKarlsruhe/farmshops.eu, Verzeichnis data/)
- *  3. `seed`      – die im Repository mitgelieferte, bereits gefilterte Datei data/seed/osm-milk-de.json
+ *  3. `seed`      – die im Repository mitgelieferte, bereits gefilterte Datei data/seed/osm-hofprodukte-de.json
  *
  * Lizenz der Daten: ODbL 1.0, © OpenStreetMap-Mitwirkende.
  */
@@ -33,6 +33,10 @@ area["ISO3166-1"="DE"][admin_level=2]->.de;
   nwr(area.de)[shop=farm][~"^(product|products|produce)$"~"milk"];
   nwr(area.de)[shop=farm][name~"[Mm]ilch"];
   nwr(area.de)[amenity=vending_machine][name~"[Mm]ilch"];
+  nwr(area.de)[vending~"egg|honey|meat|sausage|cheese"][vending!=animal_food];
+  nwr(area.de)[shop=farm][~"^(product|products|produce)$"~"egg|honey|meat|sausage|cheese"];
+  nwr(area.de)[shop=farm][name~"[Ee]ier|[Hh]onig|[Ff]leisch|[Ww]urst|[Kk]äse"];
+  nwr(area.de)[craft=beekeeper];
 );
 out center tags;
 `.trim();
@@ -145,7 +149,7 @@ export type SeedFile = {
   elements: OsmElement[];
 };
 
-export const SEED_PATH = path.join(process.cwd(), "data", "seed", "osm-milk-de.json");
+export const SEED_PATH = path.join(process.cwd(), "data", "seed", "osm-hofprodukte-de.json");
 
 export function readSeed(log: ImportLogger): OsmElement[] {
   const seed = JSON.parse(fs.readFileSync(SEED_PATH, "utf8")) as SeedFile;
@@ -167,12 +171,8 @@ export function osmToRecords(elements: OsmElement[], mode: string, log: ImportLo
       continue;
     }
     seen.add(key);
-    if (!milkEvidence(el.tags)) {
-      skip("kein Milchbezug");
-      continue;
-    }
-    if (el.tags.milk === "no") {
-      skip("milk=no");
+    if (productCategories(el.tags).length === 0) {
+      skip("kein passendes Produkt (Milch, Eier, Honig, Fleisch, Käse)");
       continue;
     }
     const country = el.tags["addr:country"];
@@ -189,21 +189,21 @@ export function osmToRecords(elements: OsmElement[], mode: string, log: ImportLo
     if (!normalized.name && !normalized.city && !normalized.operator) {
       normalized.nearbyPlace = nearestPlace(el.lat, el.lon);
     }
-    if (normalized.rawMilkStatus === "not_raw") {
-      skip("keine Rohmilch laut Quelle");
+    if (normalized.categories.length === 0) {
+      skip("nur pasteurisierte Milch laut Quelle");
       continue;
     }
     records.push({ normalized, raw: { type: el.osmType, id: el.osmId, tags: el.tags } });
   }
-  log(`Gefiltert: ${records.length} Standorte in Deutschland mit Milchbezug.`);
+  log(`Gefiltert: ${records.length} Standorte in Deutschland mit Hofprodukten.`);
+  const perCat: Record<string, number> = {};
+  for (const r of records) for (const c of r.normalized.categories) perCat[c] = (perCat[c] ?? 0) + 1;
+  log(`  nach Kategorie: ${Object.entries(perCat).map(([k, v]) => `${k} ${v}`).join(", ")}`);
   for (const [k, v] of Object.entries(skipped)) log(`  übersprungen (${k}): ${v}`);
   return { records, scanned: elements.length, skipped, complete: true, mode };
 }
 
-/** Wählt eine germany-relevante Teilmenge für die Seed-Datei aus. */
-export function filterMilkElements(elements: OsmElement[]): OsmElement[] {
-  return elements.filter((el) => {
-    if (!milkEvidence(el.tags) || el.tags.milk === "no") return false;
-    return stateForPoint(el.lat, el.lon) !== null;
-  });
+/** Wählt die für Deutschland relevante Teilmenge (Standorte mit Hofprodukten) für die Seed-Datei aus. */
+export function filterProductElements(elements: OsmElement[]): OsmElement[] {
+  return elements.filter((el) => productCategories(el.tags).length > 0 && stateForPoint(el.lat, el.lon) !== null);
 }

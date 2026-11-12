@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { LOCATION_TYPES } from "./categories";
+import { CATEGORIES, LOCATION_TYPES } from "./categories";
 
 const optionalText = (max: number) =>
   z.string().trim().max(max).optional().transform((v) => (v ? v : undefined));
@@ -19,6 +19,7 @@ export const locationFieldsSchema = z.object({
   payment_methods: optionalText(200),
   description: optionalText(2000),
   raw_milk: z.enum(["ja", "nein", "unbekannt"]).optional(),
+  categories: z.array(z.enum(CATEGORIES)).max(CATEGORIES.length).optional(),
 });
 
 export const submissionSchema = z.object({

@@ -14,6 +14,9 @@ const GLYPHS: Record<LocationType, string> = {
   // Bauernhof (Scheune)
   farm:
     '<path d="M4 20V10l8-5 8 5v10z" fill="none" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 20v-6h6v6M9 14l6 6M15 14l-6 6" fill="none" stroke="#fff" stroke-width="1.5"/>',
+  // Wabe (Imkerei)
+  beekeeper:
+    '<path d="M12 3.5l7 4v8l-7 4-7-4v-8z" fill="none" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 8.5l3 1.75v3.5L12 15.5l-3-1.75v-3.5z" fill="#fff"/>',
   // Korb
   direct_sale:
     '<path d="M4 10h16l-1.6 9a1.5 1.5 0 0 1-1.5 1.2H7.1a1.5 1.5 0 0 1-1.5-1.2z" fill="none" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 10l3-5M16 10l-3-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>',

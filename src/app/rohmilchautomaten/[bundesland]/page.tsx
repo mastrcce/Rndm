@@ -34,7 +34,7 @@ export default async function StatePage({ params }: Props) {
   const s = stateBySlug(bundesland);
   if (!s) notFound();
   const [points, place, cities] = await Promise.all([
-    getPointsWhere("state = $1", [s.name], 1000),
+    getPointsWhere("state = $1 and 'milk' = any(categories)", [s.name], 1000),
     getPlaceBySlug("state", s.slug),
     getTopCities(500, 1),
   ]);

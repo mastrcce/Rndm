@@ -1,5 +1,11 @@
 # Phase 1 – Analyse der Datenquellen
 
+> **Erweiterung (12.11.2026):** Neben Milch werden jetzt auch Eier, Honig, Fleisch & Wurst und Käse erfasst.
+> Aufgenommen wird ein Standort nur, wenn die Quelle das Produkt ausdrücklich nennt: Automatensortiment (`vending=eggs;honey;…`),
+> Produktlisten (`products`, `produce`), `vending:<produkt>=yes`, Imkerei (`craft=beekeeper` → Honig) oder ein eindeutiger
+> Begriff im Namen (z. B. „Eierautomat“, „Hofkäserei“). Ergebnis: 4.830 Standorte (Milch 1.188, Eier 1.881, Honig 1.835,
+> Fleisch & Wurst 718, Käse 219). „Rohhonig“ nennt keine einzige Quelle ausdrücklich, deshalb gibt es nur die Kategorie „Honig“.
+
 Stand der Analyse: 12.11.2026
 
 ## Kurzfassung

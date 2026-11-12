@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { LOCATION_TYPE_LABELS, type LocationType } from "../categories";
+import { CATEGORIES, CATEGORY_COMPOUND, LOCATION_TYPE_LABELS, type Category, type LocationType } from "../categories";
 import { distanceMeters } from "../geo";
 import { nameSimilarity, normalizeStreet, slugify } from "../text";
 import type { NormalizedLocation } from "./types";
@@ -21,7 +21,7 @@ export type MatchCandidate = {
 export type MatchResult = { score: number; distance: number; reasons: string[] };
 
 const VENDING: LocationType[] = ["raw_milk_vending", "vending_machine"];
-const FARM: LocationType[] = ["farm_shop", "farm"];
+const FARM: LocationType[] = ["farm_shop", "farm", "beekeeper"];
 
 function typesCompatible(a: LocationType, b: LocationType): boolean {
   if (a === b) return true;
@@ -85,6 +85,7 @@ export type CanonicalFields = {
   location_type: LocationType;
   sales_types: string[];
   raw_milk_status: NormalizedLocation["rawMilkStatus"];
+  categories: Category[];
   products: string[];
   description: string | null;
   notes: string | null;
@@ -111,10 +112,16 @@ function filled(n: NormalizedLocation): number {
   return Object.values(n).filter((v) => v != null && !(Array.isArray(v) && v.length === 0)).length;
 }
 
+/** Bezeichnung für Automaten nach Sortiment: „Eierautomat“, „Honigautomat“ … */
+function typeLabel(n: Pick<NormalizedLocation, "locationType" | "categories">): string {
+  if (n.locationType === "vending_machine" && n.categories?.length === 1) return `${CATEGORY_COMPOUND[n.categories[0]]}automat`;
+  return LOCATION_TYPE_LABELS[n.locationType];
+}
+
 export function generatedName(
-  n: Pick<NormalizedLocation, "locationType" | "city" | "operator" | "state" | "nearbyPlace">,
+  n: Pick<NormalizedLocation, "locationType" | "city" | "operator" | "state" | "nearbyPlace"> & { categories?: Category[] },
 ): string {
-  const label = LOCATION_TYPE_LABELS[n.locationType];
+  const label = typeLabel({ locationType: n.locationType, categories: n.categories ?? [] });
   if (n.city) return `${label} in ${n.city}`;
   if (n.operator) return `${label} – ${n.operator}`;
   if (n.nearbyPlace) return `${label} bei ${n.nearbyPlace}`;
@@ -135,6 +142,8 @@ export function mergeSources(sources: RankedSource[]): CanonicalFields {
   };
   const union = (k: "salesTypes" | "products" | "paymentMethods"): string[] =>
     [...new Set(ordered.flatMap((s) => s.normalized[k]))].sort();
+  const cats = new Set(ordered.flatMap((s) => s.normalized.categories ?? ["milk"]));
+  const categories = CATEGORIES.filter((c) => cats.has(c));
 
   // Adresse als Block übernehmen, damit Straße/PLZ/Ort nicht aus verschiedenen Quellen gemischt werden.
   const addrSource = ordered.find((s) => s.normalized.address)?.normalized ?? ordered.find((s) => s.normalized.city)?.normalized ?? primary;
@@ -155,7 +164,7 @@ export function mergeSources(sources: RankedSource[]): CanonicalFields {
   if (sources.length > 1) flags.add("multi_source");
 
   const canonical: CanonicalFields = {
-    name: realName ?? generatedName({ ...primary, city }),
+    name: realName ?? generatedName({ ...primary, city, categories }),
     name_is_generated: !realName,
     address: addrSource.address,
     postal_code: addrSource.postalCode,
@@ -167,6 +176,7 @@ export function mergeSources(sources: RankedSource[]): CanonicalFields {
     location_type: primary.locationType,
     sales_types: union("salesTypes"),
     raw_milk_status: rawMilk,
+    categories,
     products: union("products"),
     description: first("description"),
     notes: first("notes"),
@@ -195,7 +205,7 @@ export function mergeSources(sources: RankedSource[]): CanonicalFields {
 /** Datenqualität 0–100: wie vollständig und aktuell ist der Datensatz? */
 export function qualityScore(c: Pick<CanonicalFields,
   "name_is_generated" | "address" | "postal_code" | "city" | "opening_hours" | "phone" | "website" |
-  "raw_milk_status" | "payment_methods" | "price_per_liter" | "image_url" | "last_verified_at" | "quality_flags">,
+  "raw_milk_status" | "payment_methods" | "price_per_liter" | "image_url" | "last_verified_at" | "quality_flags"> & { categories?: Category[] },
   now: Date = new Date()): number {
   let s = 0;
   if (!c.name_is_generated) s += 15;
@@ -204,7 +214,8 @@ export function qualityScore(c: Pick<CanonicalFields,
   else if (c.city) s += 5;
   if (c.opening_hours) s += 15;
   if (c.phone || c.website) s += 10;
-  if (c.raw_milk_status === "confirmed") s += 10;
+  // Rohmilch-Bestätigung zählt nur, wo Milch verkauft wird
+  if (c.raw_milk_status === "confirmed" || (c.categories && !c.categories.includes("milk"))) s += 10;
   if (c.payment_methods.length) s += 5;
   if (c.price_per_liter != null) s += 5;
   if (c.image_url) s += 5;

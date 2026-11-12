@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input, Select } from "@/components/ui/input";
-import { LOCATION_TYPE_LABELS, type LocationType } from "@/lib/categories";
+import { CATEGORIES, CATEGORY_LABELS, LOCATION_TYPE_LABELS, type LocationType } from "@/lib/categories";
 import { query } from "@/lib/db";
 import { STATES } from "@/lib/states";
 
@@ -25,6 +25,7 @@ export default async function AdminLocations({ searchParams }: { searchParams: S
   if (sp.q) add("(name ilike ? or city ilike $X or postal_code like $X or slug like $X)".replace(/\$X/g, `$${params.length + 1}`), `%${sp.q}%`);
   if (sp.land) add("state = ?", sp.land);
   if (sp.typ) add("location_type = ?::location_type", sp.typ);
+  if (sp.produkt) add("? = any(categories)", sp.produkt);
   if (sp.flag === "no_name") where.push("name_is_generated");
   else if (sp.flag) add("? = any(quality_flags)", sp.flag);
   if (sp.quelle) add("exists(select 1 from location_sources s where s.location_id = locations.id and s.source = ?)", sp.quelle);
@@ -48,14 +49,15 @@ export default async function AdminLocations({ searchParams }: { searchParams: S
         <Button asChild><Link href="/admin/standorte/neu">Neuer Standort</Link></Button>
       </div>
       {sp.geloescht && <p className="mt-3 rounded-xl bg-sage-100 px-4 py-2 text-sm">Standort gelöscht.</p>}
-      <form className="mt-4 grid gap-2 rounded-xl2 border border-line bg-white p-3 sm:grid-cols-3 lg:grid-cols-7">
+      <form className="mt-4 grid gap-2 rounded-xl2 border border-line bg-white p-3 sm:grid-cols-3 lg:grid-cols-8">
         <Input name="q" defaultValue={sp.q} placeholder="Name, Ort, PLZ …" className="lg:col-span-2" />
         <Select name="land" defaultValue={sp.land ?? ""}><option value="">Alle Länder</option>{STATES.map((s) => <option key={s.slug} value={s.name}>{s.name}</option>)}</Select>
+        <Select name="produkt" defaultValue={sp.produkt ?? ""}><option value="">Alle Produkte</option>{CATEGORIES.map((c) => <option key={c} value={c}>{CATEGORY_LABELS[c]}</option>)}</Select>
         <Select name="typ" defaultValue={sp.typ ?? ""}><option value="">Alle Arten</option>{Object.entries(LOCATION_TYPE_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</Select>
         <Select name="flag" defaultValue={sp.flag ?? ""}><option value="">Alle Datensätze</option>{Object.entries(FLAGS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}</Select>
         <Select name="aktiv" defaultValue={sp.aktiv ?? ""}><option value="">Aktive</option><option value="nein">Deaktivierte</option><option value="alle">Alle</option></Select>
         <Select name="sort" defaultValue={sp.sort ?? ""}><option value="">Name</option><option value="qualitaet">Qualität aufsteigend</option><option value="geaendert">Zuletzt geändert</option></Select>
-        <Button type="submit" variant="secondary" className="sm:col-span-3 lg:col-span-7 lg:justify-self-end">Filtern</Button>
+        <Button type="submit" variant="secondary" className="sm:col-span-3 lg:col-span-8 lg:justify-self-end">Filtern</Button>
       </form>
       <div className="mt-4 overflow-x-auto rounded-xl2 border border-line bg-white">
         <table className="w-full min-w-[720px] text-left text-sm">

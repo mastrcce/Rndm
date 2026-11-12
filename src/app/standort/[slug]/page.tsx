@@ -4,12 +4,16 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { DistanceToUser } from "@/components/location/distance-to-user";
 import { LocationActions } from "@/components/location/location-actions";
+import { LocationImage } from "@/components/location/location-image";
 import { MiniMapClient } from "@/components/location/mini-map-client";
 import { OpeningHoursView } from "@/components/location/opening-hours-view";
 import { SafetyNotice } from "@/components/safety-notice";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { CategoryIcon } from "@/components/category-icon";
 import {
+  CATEGORY_LABELS,
+  CATEGORY_SLUGS,
   LOCATION_TYPE_DESCRIPTIONS,
   LOCATION_TYPE_LABELS,
   RAW_MILK_LABELS,
@@ -37,7 +41,8 @@ function describe(l: LocationDetail): string {
   const parts = [`${LOCATION_TYPE_LABELS[l.locationType]}${where}`];
   if (l.address) parts.push(`${l.address}${l.postalCode || l.city ? `, ${[l.postalCode, l.city].filter(Boolean).join(" ")}` : ""}`);
   if (l.openingHours) parts.push(`Öffnungszeiten: ${l.openingHours}`);
-  parts.push(l.rawMilkStatus === "confirmed" ? "Rohmilch laut Quelle bestätigt" : "Milchverkauf");
+  parts.push(`Angebot: ${l.categories.map((c) => CATEGORY_LABELS[c]).join(", ")}`);
+  if (l.categories.includes("milk") && l.rawMilkStatus === "confirmed") parts.push("Rohmilch laut Quelle bestätigt");
   return `${l.name}: ${parts.join(" · ")}. Adresse, Öffnungszeiten und Navigation.`;
 }
 
@@ -105,6 +110,10 @@ export default async function LocationPage({ params }: Props) {
   const state = stateByName(l.state);
   const cityLine = [l.postalCode, l.city].filter(Boolean).join(" ");
   const verified = formatDate(l.lastVerifiedAt);
+  // Brotkrumen: Milch-Seiten oder Seite des ersten Produkts
+  const crumbCat = l.categories.includes("milk") ? "milk" : l.categories[0] ?? "milk";
+  const crumbBase = CATEGORY_SLUGS[crumbCat];
+  const crumbLabel = crumbCat === "milk" ? "Rohmilchautomaten" : CATEGORY_LABELS[crumbCat];
 
   return (
     <article className="mx-auto max-w-6xl px-4 pb-10 pt-6 sm:px-6">
@@ -113,8 +122,8 @@ export default async function LocationPage({ params }: Props) {
         <ol className="flex flex-wrap items-center gap-1.5">
           <li><Link href="/" className="hover:text-forest-800">Start</Link></li>
           <li aria-hidden>/</li>
-          <li><Link href="/rohmilchautomaten" className="hover:text-forest-800">Bundesländer</Link></li>
-          {state && (<><li aria-hidden>/</li><li><Link href={`/rohmilchautomaten/${state.slug}`} className="hover:text-forest-800">{state.name}</Link></li></>)}
+          <li><Link href={`/${crumbBase}`} className="hover:text-forest-800">{crumbLabel}</Link></li>
+          {state && (<><li aria-hidden>/</li><li><Link href={`/${crumbBase}/${state.slug}`} className="hover:text-forest-800">{state.name}</Link></li></>)}
           <li aria-hidden>/</li>
           <li className="truncate text-forest-900" aria-current="page">{l.name}</li>
         </ol>
@@ -130,11 +139,14 @@ export default async function LocationPage({ params }: Props) {
         <div>
           <div className="flex flex-wrap gap-2">
             <Badge variant="solid">{LOCATION_TYPE_LABELS[l.locationType]}</Badge>
-            {l.rawMilkStatus === "confirmed" ? (
+            {l.categories.map((c) => (
+              <Badge key={c}><CategoryIcon category={c} className="size-3" /> {CATEGORY_LABELS[c]}</Badge>
+            ))}
+            {l.categories.includes("milk") && (l.rawMilkStatus === "confirmed" ? (
               <Badge variant="success"><BadgeCheck /> {RAW_MILK_LABELS.confirmed}</Badge>
             ) : (
               <Badge variant="outline">{RAW_MILK_LABELS[l.rawMilkStatus]}</Badge>
-            )}
+            ))}
             {l.organicStatus && <Badge>{l.organicStatus === "verified" ? "Bio (geprüft)" : `Bio laut Quelle${l.organicLabel ? ` · ${l.organicLabel}` : ""}`}</Badge>}
           </div>
           <h1 className="mt-3 text-3xl font-semibold leading-tight sm:text-5xl">{l.name}</h1>
@@ -154,15 +166,12 @@ export default async function LocationPage({ params }: Props) {
           <div className="mt-4"><LocationActions id={l.id} slug={l.slug} name={l.name} /></div>
         </div>
         <div className="overflow-hidden rounded-xl2 border border-line shadow-soft">
-          {l.imageUrl && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={l.imageUrl} alt={`Foto: ${l.name}`} loading="lazy" className="h-48 w-full object-cover" referrerPolicy="no-referrer" />
-          )}
-          <MiniMapClient lat={l.latitude} lon={l.longitude} type={l.locationType} confirmed={l.rawMilkStatus === "confirmed"} className="h-64 w-full lg:h-72" />
+          {l.imageUrl && <LocationImage src={l.imageUrl} alt={`Foto: ${l.name}`} />}
+          <MiniMapClient lat={l.latitude} lon={l.longitude} type={l.locationType} confirmed={l.rawMilkStatus === "confirmed" && l.categories.includes("milk")} className="h-64 w-full lg:h-72" />
         </div>
       </header>
 
-      <SafetyNotice className="mt-8" compact />
+      {l.categories.includes("milk") && <SafetyNotice className="mt-8" compact />}
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_340px]">
         <section aria-labelledby="details" className="rounded-xl2 border border-line bg-white px-5 py-2 shadow-soft sm:px-7">
@@ -187,16 +196,25 @@ export default async function LocationPage({ params }: Props) {
               {LOCATION_TYPE_DESCRIPTIONS[l.locationType]}
               {l.salesTypes.length > 0 && <span className="text-muted"> · {l.salesTypes.map((s) => SALES_TYPE_LABELS[s] ?? s).join(", ")}</span>}
             </Row>
+            <Row label="Produkte">
+              <span className="flex flex-wrap gap-x-4 gap-y-1">
+                {l.categories.map((c) => (
+                  <span key={c} className="inline-flex items-center gap-1.5"><CategoryIcon category={c} className="size-4 text-sage-600" /> {CATEGORY_LABELS[c]}</span>
+                ))}
+              </span>
+              <span className="block text-xs text-muted">Laut Datenquelle. Ob die Produkte aktuell vorrätig sind, können wir nicht prüfen.</span>
+            </Row>
             <Row label="Verfügbarkeit von Rohmilch">
-              {l.rawMilkStatus === "confirmed" ? (
+              {!l.categories.includes("milk") ? (
+                <span className="text-muted">Kein Milchverkauf angegeben</span>
+              ) : l.rawMilkStatus === "confirmed" ? (
                 <span className="text-emerald-800">Die Datenquelle gibt ausdrücklich Rohmilch an.</span>
               ) : (
                 <span>Milchverkauf ist angegeben, Rohmilch wird aber nicht ausdrücklich bestätigt.</span>
               )}
-              <span className="block text-xs text-muted">Ob aktuell Milch vorrätig ist, können wir nicht prüfen.</span>
             </Row>
             <Row label="Angebot laut Quelle">{l.products.length ? l.products.map(productLabel).join(", ") : NA}</Row>
-            <Row label="Preis pro Liter">{formatPrice(l.pricePerLiter) ?? NA}</Row>
+            {l.categories.includes("milk") && <Row label="Milchpreis pro Liter">{formatPrice(l.pricePerLiter) ?? NA}</Row>}
             <Row label="Zahlungsarten">{l.paymentMethods.length ? l.paymentMethods.map(paymentLabel).join(", ") : NA}</Row>
             <Row label="Beschreibung">{l.description ?? NA}</Row>
             <Row label="Besondere Hinweise">{l.notes ?? NA}</Row>

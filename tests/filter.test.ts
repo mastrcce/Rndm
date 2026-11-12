@@ -4,7 +4,7 @@ import type { MapPoint } from "@/lib/types";
 
 const p = (o: Partial<MapPoint>): MapPoint => ({
   id: o.id ?? "x", slug: "s", name: "N", gen: false, type: "raw_milk_vending", lat: 48, lon: 11, addr: null, pc: null, city: null,
-  state: "Bayern", oh: null, h24: null, raw: "unconfirmed", org: null, pay: [], sales: [], price: null, q: 10, ...o,
+  state: "Bayern", oh: null, h24: null, raw: "unconfirmed", cat: ["milk"], org: null, pay: [], sales: [], price: null, q: 10, ...o,
 });
 
 describe("Filter", () => {

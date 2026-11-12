@@ -17,7 +17,7 @@ export function RegionList({ points, title }: { points: (MapPoint & { distance?:
               <p className="text-xs font-semibold uppercase tracking-wide text-sage-600">{LOCATION_TYPE_LABELS[p.type]}{p.distance != null ? ` · ${formatDistance(p.distance)}` : ""}</p>
               <p className="mt-1 font-medium text-forest-900">{p.name}</p>
               <p className="mt-0.5 text-sm text-muted">{[p.addr, [p.pc, p.city].filter(Boolean).join(" ")].filter(Boolean).join(", ") || "Adresse: Keine Angabe"}</p>
-              {p.raw === "confirmed" && <p className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-emerald-800"><BadgeCheck className="size-3.5" /> Rohmilch laut Quelle bestätigt</p>}
+              {p.raw === "confirmed" && p.cat.includes("milk") && <p className="mt-2 inline-flex items-center gap-1 text-xs font-medium text-emerald-800"><BadgeCheck className="size-3.5" /> Rohmilch laut Quelle bestätigt</p>}
             </Link>
           </li>
         ))}

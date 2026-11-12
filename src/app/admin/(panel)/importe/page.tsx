@@ -28,7 +28,7 @@ export default async function ImportsPage({ searchParams }: { searchParams: Prom
           <h2 className="text-lg font-semibold">OpenStreetMap-Import</h2>
           <p className="mt-1 text-sm text-muted">
             „Live“ fragt die Overpass-API ab (dauert 1–5 Minuten, benötigt Netzzugang zu overpass-api.de).
-            „Mitgelieferter Abzug“ nutzt die Datei data/seed/osm-milk-de.json aus dem Repository.
+            „Mitgelieferter Abzug“ nutzt die Datei data/seed/osm-hofprodukte-de.json aus dem Repository.
           </p>
           <form action={startOsmImport} className="mt-4 flex flex-wrap items-end gap-2">
             <div className="min-w-48 flex-1">

@@ -107,10 +107,11 @@ export default function FinderMap(props: Props) {
           existing.setPopupContent(popupHtml(p));
           continue;
         }
-        const key = `${p.type}:${p.raw === "confirmed"}`;
+        const confirmed = p.raw === "confirmed" && p.cat.includes("milk");
+        const key = `${p.type}:${confirmed}`;
         let icon = iconCache.get(key);
         if (!icon) {
-          icon = L.divIcon({ html: markerHtml(p.type, p.raw === "confirmed"), className: "rm-marker", iconSize: [34, 42], iconAnchor: [17, 41], popupAnchor: [0, -36] });
+          icon = L.divIcon({ html: markerHtml(p.type, confirmed), className: "rm-marker", iconSize: [34, 42], iconAnchor: [17, 41], popupAnchor: [0, -36] });
           iconCache.set(key, icon);
         }
         const m = L.marker([p.lat, p.lon], { icon, title: p.name, keyboard: true, alt: p.name });

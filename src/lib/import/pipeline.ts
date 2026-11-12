@@ -30,7 +30,7 @@ export type ImportStats = {
 
 const CANONICAL_COLUMNS: (keyof CanonicalFields)[] = [
   "name", "name_is_generated", "address", "postal_code", "city", "state", "country", "latitude", "longitude",
-  "location_type", "sales_types", "raw_milk_status", "products", "description", "notes", "phone", "email",
+  "location_type", "sales_types", "raw_milk_status", "categories", "products", "description", "notes", "phone", "email",
   "website", "opening_hours", "is_24_7", "price_per_liter", "payment_methods", "organic_status",
   "organic_label", "image_url", "source", "source_url", "last_verified_at", "data_quality_score", "quality_flags",
 ];

@@ -24,6 +24,10 @@ export function Footer() {
           <ul className="mt-3 space-y-2 text-sm">
             <li><Link href="/#karte" className="hover:text-white">Karte</Link></li>
             <li><Link href="/rohmilchautomaten" className="hover:text-white">Milchautomaten nach Bundesland</Link></li>
+            <li><Link href="/eier" className="hover:text-white">Eier vom Hof</Link></li>
+            <li><Link href="/honig" className="hover:text-white">Honig vom Imker</Link></li>
+            <li><Link href="/fleisch-wurst" className="hover:text-white">Fleisch & Wurst</Link></li>
+            <li><Link href="/kaese" className="hover:text-white">Käse vom Hof</Link></li>
             <li><Link href="/standort-vorschlagen" className="hover:text-white">Standort vorschlagen</Link></li>
             <li><Link href="/favoriten" className="hover:text-white">Meine Favoriten</Link></li>
             <li><Link href="/app" className="hover:text-white">Als App installieren</Link></li>

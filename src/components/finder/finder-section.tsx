@@ -7,7 +7,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useFavorites } from "@/hooks/use-favorites";
-import { LOCATION_TYPE_LABELS, LOCATION_TYPE_PLURAL, LOCATION_TYPES, type LocationType } from "@/lib/categories";
+import { CategoryIcon } from "@/components/category-icon";
+import { CATEGORIES, CATEGORY_LABELS, LOCATION_TYPE_LABELS, LOCATION_TYPE_PLURAL, LOCATION_TYPES, type Category, type LocationType } from "@/lib/categories";
 import {
   applyFilters,
   countActiveFilters,
@@ -86,6 +87,13 @@ export function FinderSection({ initialBbox, title = "Alle Standorte auf der Kar
     node?.scrollIntoView({ block: "nearest", behavior: "smooth" });
   }, [f.selectedId]);
 
+  const toggleCategory = (c: Category) =>
+    setFilters((s) => ({ ...s, categories: s.categories.includes(c) ? s.categories.filter((x) => x !== c) : [...s.categories, c] }));
+  const catCounts = useMemo(() => {
+    const n = Object.fromEntries(CATEGORIES.map((c) => [c, 0])) as Record<Category, number>;
+    for (const p of f.points) for (const c of p.cat) n[c]++;
+    return n;
+  }, [f.points]);
   const toggleType = (t: LocationType) =>
     setFilters((s) => ({ ...s, types: s.types.includes(t) ? s.types.filter((x) => x !== t) : [...s.types, t] }));
   const togglePayment = (k: string) =>
@@ -111,6 +119,30 @@ export function FinderSection({ initialBbox, title = "Alle Standorte auf der Kar
 
         {/* Filter */}
         <div className="mt-4 rounded-xl2 border border-line bg-white p-3 shadow-soft sm:p-4">
+          <fieldset className="mb-3 border-b border-line pb-3">
+            <legend className="mb-2 text-xs font-semibold uppercase tracking-wide text-sage-600">Was suchst du?</legend>
+            <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 sm:flex-wrap sm:overflow-visible sm:pb-0 [&>*]:shrink-0">
+              {CATEGORIES.map((c) => {
+                const active = filters.categories.includes(c);
+                return (
+                  <button
+                    key={c}
+                    type="button"
+                    onClick={() => toggleCategory(c)}
+                    aria-pressed={active}
+                    className={cn(
+                      "inline-flex h-10 items-center gap-2 rounded-full border px-4 text-sm font-medium transition-colors",
+                      active ? "border-forest-800 bg-forest-800 text-cream-50" : "border-line bg-cream-50 text-forest-900 hover:border-sage-400",
+                    )}
+                  >
+                    <CategoryIcon category={c} />
+                    {CATEGORY_LABELS[c]}
+                    {!f.loading && <span className={cn("text-xs tabular-nums", active ? "text-cream-200" : "text-muted")}>{catCounts[c].toLocaleString("de-DE")}</span>}
+                  </button>
+                );
+              })}
+            </div>
+          </fieldset>
           <div className="flex flex-wrap items-center gap-2">
             <div className="-mx-1 flex w-[calc(100%+0.5rem)] gap-2 overflow-x-auto px-1 pb-1 sm:w-auto sm:flex-wrap sm:overflow-visible sm:pb-0 [&>*]:shrink-0">
               {LOCATION_TYPES.map((t) => (
@@ -237,7 +269,13 @@ export function FinderSection({ initialBbox, title = "Alle Standorte auf der Kar
                         </p>
                         <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
                           <Badge variant="outline">{LOCATION_TYPE_LABELS[p.type]}</Badge>
-                          {p.raw === "confirmed" && <Badge variant="success"><BadgeCheck /> Rohmilch bestätigt</Badge>}
+                          {p.cat.map((c) => (
+                            <span key={c} title={CATEGORY_LABELS[c]} className="inline-flex size-6 items-center justify-center rounded-full bg-cream-100 text-forest-800">
+                              <CategoryIcon category={c} className="size-3.5" />
+                              <span className="sr-only">{CATEGORY_LABELS[c]}</span>
+                            </span>
+                          ))}
+                          {p.raw === "confirmed" && p.cat.includes("milk") && <Badge variant="success"><BadgeCheck /> Rohmilch bestätigt</Badge>}
                           {p.h24 && <Badge>24/7 laut Angabe</Badge>}
                           {p.distance != null && <span className="text-xs font-medium text-forest-700">{formatDistance(p.distance)}</span>}
                         </div>

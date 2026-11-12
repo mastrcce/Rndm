@@ -1,11 +1,21 @@
 # Rohmilch-Atlas Deutschland
 
-Verzeichnis von Rohmilchautomaten, Milchtankstellen, Hofläden und Bauernhöfen mit Milchverkauf in Deutschland:
+Verzeichnis von Rohmilchautomaten, Milchtankstellen, Hofläden, Imkereien und Bauernhöfen in Deutschland, mit Milch als
+Schwerpunkt und zusätzlich **Eiern, Honig, Fleisch & Wurst und Käse** direkt vom Hof:
 eine interaktive Karte, Suche nach Ort, PLZ und Umkreis, Detailseiten und ein Admin-Dashboard mit Datenimport,
 Dublettenprüfung und Moderation.
 
-**Datenstand im Repository:** 1.205 OSM-Objekte → **1.188 Standorte** in allen 16 Bundesländern
-(941 Automaten, 237 Hofläden, 163 mit ausdrücklich bestätigter Rohmilch). Quelle: OpenStreetMap via farmshops.eu, Stand 25.10.2026.
+**Datenstand im Repository:** 4.926 OSM-Objekte → **4.830 Standorte** in allen 16 Bundesländern. Quelle: OpenStreetMap via farmshops.eu, Stand 25.10.2026.
+
+| Produkt | Standorte |
+|---|---|
+| Milch | 1.188 (163 mit ausdrücklich bestätigter Rohmilch) |
+| Eier | 1.881 |
+| Honig | 1.835 |
+| Fleisch & Wurst | 718 |
+| Käse | 219 |
+
+Ein Standort kann mehrere Produkte haben. Kartoffeln u. Ä. werden bewusst nicht aufgenommen.
 
 > Rohmilch vor dem Verzehr abkochen. Die Website weist auf jeder Seite darauf hin.
 
@@ -14,13 +24,15 @@ Dublettenprüfung und Moderation.
 - **Startseite**: Suche (Stadt, PLZ, Adresse), „Standort verwenden“, Statistiken, Karte und Liste
 - **Karte** (Leaflet + OpenStreetMap): unterschiedliche Marker je Standortart, Clustering, Info-Popup mit
   Navigation über Google Maps oder Apple Karten, eigener Standort, Liste synchron zum Kartenausschnitt
-- **Filter**: Milchautomat, Verkaufsautomat, Hofladen, Bauernhof, Direktverkauf · Umkreis 5/10/25/50/100 km ·
+- **„Was suchst du?“**: Milch (vorausgewählt), Eier, Honig, Fleisch & Wurst, Käse. Mehrfachauswahl möglich
+- **Filter**: Milchautomat, Verkaufsautomat, Hofladen, Bauernhof, Imkerei, Direktverkauf · Umkreis 5/10/25/50/100 km ·
   24/7 und „jetzt geöffnet“ (nur laut Angabe) · Rohmilch bestätigt · Bio (laut Quelle) · Zahlungsarten · Sortierung nach Entfernung
 - **Detailseiten** `/standort/[slug]`: alle Felder, fehlende als „Keine Angabe“, Öffnungszeiten als Wochentabelle,
   Herkunft der Daten mit Lizenz und Link, Datum der letzten Prüfung und Aktualisierung, Standorte in der Nähe, JSON-LD
 - **Nutzerfunktionen**: Favoriten (lokal im Browser), Teilen, Fehler melden, Infos ergänzen, Standort vorschlagen.
   Alles wird vor der Veröffentlichung moderiert
-- **SEO**: `/rohmilchautomaten`, `/rohmilchautomaten/bayern`, `/rohmilch-in-rosenheim`, Sitemap, robots.txt, Open Graph, ISR
+- **SEO**: `/rohmilchautomaten`, `/rohmilchautomaten/bayern`, `/rohmilch-in-rosenheim`, `/produkte`, `/eier`, `/eier/bayern`,
+  `/honig`, `/fleisch-wurst`, `/kaese` (jeweils auch je Bundesland), Sitemap, robots.txt, Open Graph, ISR
 - **App** (PWA): auf dem Startbildschirm installierbar (iPhone, Android, Desktop), mit Offline-Betrieb für Karte, Favoriten und besuchte Seiten. Siehe [docs/APP.md](docs/APP.md)
 - **Admin** (`/admin`): Standorte verwalten, anlegen, bearbeiten und löschen, Importe starten (Overpass/Seed/Datei),
   Importprotokolle, Datenquellen, Dublettenprüfung mit Zusammenführen, Moderation, Qualitätsstatistiken, Änderungsprotokoll
@@ -48,7 +60,7 @@ Voraussetzungen: Node.js ≥ 20, PostgreSQL mit PostGIS (z. B. `docker run -p 54
 npm install
 cp .env.example .env.local          # DATABASE_URL, ADMIN_PASSWORD, ADMIN_SESSION_SECRET anpassen
 npm run db:migrate                  # Schema anlegen
-npm run import:osm -- --mode seed   # 1.188 Standorte aus dem mitgelieferten OSM-Abzug importieren
+npm run import:osm -- --mode seed   # 4.830 Standorte aus dem mitgelieferten OSM-Abzug importieren
 npm run dev                         # http://localhost:3000  (Admin: /admin)
 ```
 

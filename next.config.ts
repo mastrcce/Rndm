@@ -12,6 +12,9 @@ const nextConfig: NextConfig = {
     return [
       // SEO-URL /rohmilch-in-berlin -> interne Route /stadt/berlin
       { source: "/rohmilch-in-:city", destination: "/stadt/:city" },
+      // Produkt-Landingpages: /eier, /eier/bayern, /honig, /fleisch-wurst, /kaese
+      { source: "/:kategorie(eier|honig|fleisch-wurst|kaese)", destination: "/produkte/:kategorie" },
+      { source: "/:kategorie(eier|honig|fleisch-wurst|kaese)/:bundesland", destination: "/produkte/:kategorie/:bundesland" },
     ];
   },
   async headers() {

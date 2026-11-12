@@ -1,4 +1,4 @@
-import type { LocationType, RawMilkStatus } from "../../categories";
+import { CATEGORIES, type Category, type LocationType, type RawMilkStatus } from "../../categories";
 import type { NormalizedLocation } from "../types";
 
 export type OsmElement = {
@@ -52,6 +52,43 @@ export function milkEvidence(tags: Record<string, string>): string | null {
   return null;
 }
 
+const ITEM_WORDS: Record<Exclude<Category, "milk">, string[]> = {
+  eggs: ["egg", "eggs"],
+  honey: ["honey"],
+  meat: ["meat", "sausage", "sausages", "ham", "beef", "pork", "poultry", "game", "venison", "lamb", "chicken"],
+  cheese: ["cheese"],
+};
+
+const NAME_WORDS: Record<Exclude<Category, "milk">, RegExp> = {
+  eggs: /(^|[^a-zäöüß])(freiland|bio-?|frische[ -]?)?eier/i,
+  honey: /honig|imker/i,
+  meat: /fleisch|wurst|metzg|schlacht/i,
+  cheese: /käse|kaese|sennerei/i,
+};
+
+/**
+ * Ermittelt die Produktkategorien eines OSM-Objekts. Nur ausdrückliche Angaben zählen:
+ * Automatensortiment (`vending`), Produktlisten (`products`, `produce`), `vending:<x>=yes`,
+ * Imkerei (`craft=beekeeper`) oder ein eindeutiger Begriff im Namen.
+ */
+export function productCategories(tags: Record<string, string>): Category[] {
+  const items = new Set([
+    ...splitList(tags.vending),
+    ...splitList(tags.product),
+    ...splitList(tags.products),
+    ...splitList(tags.produce),
+  ]);
+  const found = new Set<Category>();
+  if (milkEvidence(tags) && tags.milk !== "no") found.add("milk");
+  for (const cat of ["eggs", "honey", "meat", "cheese"] as const) {
+    if (ITEM_WORDS[cat].some((w) => items.has(w))) found.add(cat);
+    else if (ITEM_WORDS[cat].some((w) => tags[`vending:${w}`] === "yes")) found.add(cat);
+    else if (NAME_WORDS[cat].test(tags.name ?? "")) found.add(cat);
+  }
+  if (tags.craft === "beekeeper") found.add("honey");
+  return CATEGORIES.filter((c) => found.has(c));
+}
+
 export function rawMilkStatus(tags: Record<string, string>): RawMilkStatus {
   const text = `${tags.name ?? ""} ${tags.description ?? ""} ${tags.note ?? ""}`;
   if (tags.milk === "raw_milk" || tags.milk === "raw") return "confirmed";
@@ -66,14 +103,16 @@ export function rawMilkStatus(tags: Record<string, string>): RawMilkStatus {
 
 export function classify(tags: Record<string, string>): { type: LocationType; salesTypes: string[] } {
   const vending = splitList(tags.vending);
+  const hasMilk = !!milkEvidence(tags);
   const salesTypes = new Set<string>();
   if (tags.self_service === "yes" || tags.self_service === "only") salesTypes.add("selbstbedienung");
 
   if (tags.amenity === "vending_machine") {
     salesTypes.add("automat");
+    // Milchautomat nur, wenn Milch im Spiel ist und das Sortiment im Wesentlichen aus Milch (ggf. Eiern) besteht
     const milkOnly = vending.length > 0 && vending.every((v) => ["milk", "raw_milk", "eggs", "egg"].includes(v));
-    const named = MILK_WORD.test(tags.name ?? "") || /tankstelle/i.test(tags.name ?? "");
-    const type: LocationType = milkOnly || named || vending.length === 0 ? "raw_milk_vending" : "vending_machine";
+    const named = MILK_WORD.test(tags.name ?? "") || /milchtankstelle|milch-tankstelle/i.test(tags.name ?? "");
+    const type: LocationType = hasMilk && (milkOnly || named || vending.length === 0) ? "raw_milk_vending" : "vending_machine";
     return { type, salesTypes: [...salesTypes] };
   }
   if (tags.shop === "farm") {
@@ -81,6 +120,10 @@ export function classify(tags: Record<string, string>): { type: LocationType; sa
     salesTypes.add("direktverkauf");
     if (vending.length) salesTypes.add("automat");
     return { type: "farm_shop", salesTypes: [...salesTypes] };
+  }
+  if (tags.craft === "beekeeper") {
+    salesTypes.add("direktverkauf");
+    return { type: "beekeeper", salesTypes: [...salesTypes] };
   }
   if (tags.amenity === "marketplace") {
     salesTypes.add("markt");
@@ -160,7 +203,12 @@ export function normalizeOsm(el: OsmElement, state: string | null): NormalizedLo
   const { type, salesTypes } = classify(t);
   const products = [...new Set([...splitList(t.vending), ...splitList(t.products ?? t.product), ...splitList(t.produce)])]
     .filter((p) => p !== "animal_food");
-  if (!products.includes("milk") && !products.includes("raw_milk")) products.unshift("milk");
+  const raw = rawMilkStatus(t);
+  // Ausdrücklich pasteurisierte Milch zählt nicht als Milch-Kategorie (Rohmilch-Verzeichnis)
+  const categories = productCategories(t).filter((c) => !(c === "milk" && raw === "not_raw"));
+  for (const [cat, word] of [["milk", "milk"], ["eggs", "eggs"], ["honey", "honey"], ["meat", "meat"], ["cheese", "cheese"]] as const) {
+    if (categories.includes(cat) && !products.some((p) => p === word || (cat === "milk" && p === "raw_milk") || (cat === "eggs" && p === "egg"))) products.push(word);
+  }
 
   const flags: string[] = [];
   const name = cleanName(t.name) ?? cleanName(t.brand);
@@ -190,7 +238,8 @@ export function normalizeOsm(el: OsmElement, state: string | null): NormalizedLo
     longitude: el.lon,
     locationType: type,
     salesTypes,
-    rawMilkStatus: rawMilkStatus(t),
+    rawMilkStatus: raw,
+    categories,
     products,
     description: clean(t.description) ?? clean(t["description:de"]),
     notes: clean(t["note:de"]) ?? clean(t.note),

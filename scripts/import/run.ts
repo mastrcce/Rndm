@@ -15,7 +15,7 @@ import { loadEnv } from "../env";
 loadEnv();
 
 import { pool } from "../../src/lib/db";
-import { filterMilkElements, readFarmshopsSnapshot, SEED_PATH, type SeedFile } from "../../src/lib/import/adapters/osm";
+import { filterProductElements, readFarmshopsSnapshot, SEED_PATH, type SeedFile } from "../../src/lib/import/adapters/osm";
 import { buildPlaceSeed, PLACES_SEED_PATH, rebuildPlaces } from "../../src/lib/import/places";
 import { importFile, importOsm, scanDuplicates, type OsmMode } from "../../src/lib/import/service";
 
@@ -58,18 +58,18 @@ async function main() {
     const head = fs.readFileSync(path.join(dir, "data", "farmshopGeoJson.js"), "utf8").slice(0, 200);
     const stand = head.match(/Datenabgleich: (\d{2})\.(\d{2})\.(\d{4})/);
     const generatedAt = stand ? `${stand[3]}-${stand[2]}-${stand[1]}` : new Date().toISOString().slice(0, 10);
-    const milk = filterMilkElements(all);
+    const products = filterProductElements(all);
     const seed: SeedFile = {
       generatedAt,
       source: "OpenStreetMap via farmshops.eu (github.com/CodeforKarlsruhe/farmshops.eu)",
       license: "ODbL 1.0 – © OpenStreetMap-Mitwirkende",
-      elements: milk.sort((a, b) => `${a.osmType}${a.osmId}`.localeCompare(`${b.osmType}${b.osmId}`)),
+      elements: products.sort((a, b) => `${a.osmType}${a.osmId}`.localeCompare(`${b.osmType}${b.osmId}`)),
     };
     fs.mkdirSync(path.dirname(SEED_PATH), { recursive: true });
     fs.writeFileSync(SEED_PATH, JSON.stringify(seed));
     const places = buildPlaceSeed(all).sort((a, b) => a.kind.localeCompare(b.kind) || a.name.localeCompare(b.name));
     fs.writeFileSync(PLACES_SEED_PATH, JSON.stringify(places));
-    console.log(`Seed: ${milk.length} Milch-Standorte, ${places.length} Ortseinträge (Stand ${generatedAt}).`);
+    console.log(`Seed: ${products.length} Standorte mit Hofprodukten, ${places.length} Ortseinträge (Stand ${generatedAt}).`);
     return;
   } else {
     console.log(fs.readFileSync(__filename, "utf8").split("*/")[0]);

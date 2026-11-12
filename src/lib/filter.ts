@@ -1,10 +1,12 @@
-import type { LocationType } from "./categories";
+import type { Category, LocationType } from "./categories";
 import { distanceMeters, type LatLon } from "./geo";
 import type { MapPoint } from "./types";
 
 export const RADIUS_OPTIONS = [5, 10, 25, 50, 100] as const;
 
 export type FilterState = {
+  /** Gesuchte Produkte: Standort muss mindestens eines davon anbieten. Leere Liste = alle */
+  categories: Category[];
   /** Leere Liste = alle Arten */
   types: LocationType[];
   onlyRawConfirmed: boolean;
@@ -18,6 +20,7 @@ export type FilterState = {
 };
 
 export const DEFAULT_FILTERS: FilterState = {
+  categories: ["milk"],
   types: [],
   onlyRawConfirmed: false,
   open247: false,
@@ -58,6 +61,7 @@ export function applyFilters(
 ): ResultPoint[] {
   const out: ResultPoint[] = [];
   for (const p of points) {
+    if (f.categories.length && !f.categories.some((c) => p.cat.includes(c))) continue;
     if (f.types.length && !f.types.includes(p.type)) continue;
     if (f.onlyRawConfirmed && p.raw !== "confirmed") continue;
     if (f.open247 && p.h24 !== true) continue;

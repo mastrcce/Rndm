@@ -18,7 +18,7 @@ export function FavoritesList() {
     let alive = true;
     fetch(`/api/locations?ids=${key}`)
       .then((r) => r.json())
-      .then((j: { points: MapPoint[] }) => alive && setLoaded({ key, points: j.points ?? [] }))
+      .then((j: { points: MapPoint[] }) => alive && setLoaded({ key, points: (j.points ?? []).map((p) => (Array.isArray(p.cat) ? p : { ...p, cat: ["milk"] })) }))
       .catch(() => alive && setLoaded({ key, points: [] }));
     return () => {
       alive = false;

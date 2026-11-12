@@ -28,7 +28,7 @@
 | Pfad | Inhalt |
 |---|---|
 | `db/migrations/` | SQL-Migrationen (PostGIS, pg_trgm). Läuft lokal und auf Supabase |
-| `data/seed/osm-milk-de.json` | Gefilterter OSM-Abzug (1.205 Objekte, ODbL) für den Offline-Import |
+| `data/seed/osm-hofprodukte-de.json` | Gefilterter OSM-Abzug (4.926 Objekte mit Milch, Eiern, Honig, Fleisch oder Käse; ODbL) für den Offline-Import |
 | `data/seed/places-de.json` | Ortsverzeichnis (Städte, PLZ) aus OSM-Adressen |
 | `data/geo/bundeslaender.geo.json` | Bundeslandgrenzen (Public Domain) |
 | `scripts/` | CLI: Migration, Import, Seed-Erzeugung |
@@ -45,7 +45,7 @@
   (id, name, slug, address, postal_code, city, state, country, latitude, longitude, location_type, description,
   phone, website, opening_hours, price_per_liter, payment_methods, image_url, source, source_url, last_verified_at,
   last_imported_at, data_quality_score, is_active, created_at, updated_at) sowie:
-  `geom` (PostGIS, automatisch berechnet), `raw_milk_status`, `organic_status`, `quality_flags`, `locked_fields`, `name_is_generated`.
+  `geom` (PostGIS, automatisch berechnet), `categories` (Produkte: milk, eggs, honey, meat, cheese), `raw_milk_status`, `organic_status`, `quality_flags`, `locked_fields`, `name_is_generated`.
 - **`location_sources`**: ein Eintrag je Quelle und Quell-ID, mit Original- (`raw`) und Normaldaten.
   Ein Standort kann mehrere Quellen haben, erscheint aber nur einmal auf der Karte.
 - **`location_changes`**: jede Änderung als Diff (`{feld: {from, to}}`) mit Herkunft (Import, Admin, Nutzerbeitrag).
@@ -76,7 +76,7 @@
 ## Frontend
 
 - **Karte**: Leaflet 1.9 + markercluster, eigene SVG-Marker je Standortart, goldener Punkt = Rohmilch bestätigt.
-  Alle ~1.200 Standorte werden einmal kompakt geladen (`/api/locations`, ≈ 430 KB bzw. ≈ 80 KB komprimiert). Filter, Umkreis,
+  Alle ~4.800 Standorte werden einmal kompakt geladen (`/api/locations`, ≈ 1,8 MB bzw. ≈ 330 KB komprimiert). Filter, Umkreis,
   Sortierung und die Synchronisation zwischen Karte und Liste laufen im Browser. Für deutlich größere
   Datenmengen gibt es bereits `GET /api/locations?bbox=…` (PostGIS-Abfrage nach Kartenausschnitt).
 - **Suche**: lokales Ortsverzeichnis (Städte, PLZ, Bundesländer) per Trigramm-Ähnlichkeit, mit Nominatim-Fallback für Adressen.

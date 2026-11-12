@@ -1,4 +1,4 @@
-import type { LocationType, RawMilkStatus } from "../categories";
+import type { Category, LocationType, RawMilkStatus } from "../categories";
 
 /**
  * Gemeinsames Datenformat, in das jede Quelle überführt wird.
@@ -20,6 +20,8 @@ export type NormalizedLocation = {
   locationType: LocationType;
   salesTypes: string[];
   rawMilkStatus: RawMilkStatus;
+  /** Produktkategorien laut Quelle (mindestens eine) */
+  categories: Category[];
   products: string[];
   description: string | null;
   notes: string | null;

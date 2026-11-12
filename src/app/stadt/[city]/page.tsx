@@ -34,7 +34,7 @@ export default async function CityPage({ params }: Props) {
   const { city } = await params;
   const place = await getPlaceBySlug("city", city);
   if (!place) notFound();
-  const points = await getNearby(place.latitude, place.longitude, RADIUS_KM, 200);
+  const points = await getNearby(place.latitude, place.longitude, RADIUS_KM, 200, undefined, "milk");
   const state = stateByName(place.state);
   const d = RADIUS_KM / 111;
   const bbox: [number, number, number, number] = [place.longitude - d * 1.5, place.latitude - d, place.longitude + d * 1.5, place.latitude + d];

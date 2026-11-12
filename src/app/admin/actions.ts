@@ -53,6 +53,8 @@ export async function logout() {
 function formToObject(form: FormData): Record<string, unknown> {
   const o: Record<string, unknown> = {};
   for (const [k, v] of form.entries()) if (typeof v === "string") o[k] = v;
+  // Mehrfachauswahl (Checkboxen)
+  if (form.has("categories")) o.categories = form.getAll("categories").map(String);
   return o;
 }
 
@@ -180,7 +182,13 @@ export async function moderateSubmission(id: number, decision: "approve" | "reje
       const { slug } = await createManualLocation(fieldsToEdit(fields), source);
       resultNote = `${note ?? ""} Angelegt: /standort/${slug}`.trim();
     } else if (s.kind === "addition" && s.location_id) {
-      await updateLocationAsAdmin(s.location_id, fieldsToEdit(s.payload.fields), source);
+      const edit = fieldsToEdit(s.payload.fields);
+      if (Array.isArray(edit.categories)) {
+        // Ergänzung: neue Produkte hinzufügen, bestehende nicht entfernen
+        const [cur] = await query<{ categories: string[] }>("select categories from locations where id = $1", [s.location_id]);
+        edit.categories = sanitizeEdit({ categories: [...(cur?.categories ?? []), ...(edit.categories as string[])] }).categories;
+      }
+      await updateLocationAsAdmin(s.location_id, edit, source);
     } else if (s.kind === "report" && s.location_id) {
       const reason = s.payload.report_reason;
       if (reason === "closed") await setActive(s.location_id, false, `Meldung #${s.id}: geschlossen`);

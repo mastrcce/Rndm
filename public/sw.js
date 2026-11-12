@@ -9,7 +9,7 @@
  * - Kartenkacheln werden begrenzt zwischengespeichert.
  * - Admin-Bereich, Meldungen und Ortssuche werden nie gecacht.
  */
-const VERSION = "v1";
+const VERSION = "v2"; // v2: Produktkategorien in der Standortliste
 const STATIC_CACHE = `ra-static-${VERSION}`;
 const PAGE_CACHE = `ra-pages-${VERSION}`;
 const DATA_CACHE = `ra-data-${VERSION}`;

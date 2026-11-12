@@ -4,7 +4,7 @@ import type { NormalizedLocation } from "@/lib/import/types";
 
 const base: NormalizedLocation = {
   source: "osm", sourceId: "node/1", sourceUrl: null, name: null, address: null, postalCode: null, city: null, state: "Bayern",
-  country: "DE", latitude: 48, longitude: 11, locationType: "raw_milk_vending", salesTypes: ["automat"], rawMilkStatus: "unconfirmed",
+  country: "DE", latitude: 48, longitude: 11, locationType: "raw_milk_vending", salesTypes: ["automat"], rawMilkStatus: "unconfirmed", categories: ["milk"],
   products: ["milk"], description: null, notes: null, phone: null, email: null, website: null, openingHours: null, is247: null,
   pricePerLiter: null, paymentMethods: [], organicStatus: null, organicLabel: null, imageUrl: null, lastVerifiedAt: null,
   qualityFlags: [], operator: null,

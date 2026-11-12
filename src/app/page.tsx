@@ -4,6 +4,7 @@ import { FinderProvider } from "@/components/finder/finder-context";
 import { FinderSection } from "@/components/finder/finder-section";
 import { SearchBox } from "@/components/finder/search-box";
 import { InstallButton } from "@/components/pwa/install-button";
+import { CategoryCards } from "@/components/category-cards";
 import { SafetyNotice } from "@/components/safety-notice";
 import { StatsGrid } from "@/components/stats";
 import { getStateCounts, getStats } from "@/lib/locations";
@@ -45,7 +46,8 @@ export default async function HomePage() {
             Finde frische Rohmilch in deiner Nähe.
           </h1>
           <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted sm:text-xl">
-            Entdecke Rohmilchautomaten, Bauernhöfe und regionale Verkaufsstellen in ganz Deutschland.
+            Entdecke Rohmilchautomaten, Bauernhöfe und regionale Verkaufsstellen in ganz Deutschland –
+            auch für Eier, Honig, Fleisch und Käse direkt vom Hof.
           </p>
           <div className="mt-8 max-w-3xl">
             <SearchBox />
@@ -70,6 +72,13 @@ export default async function HomePage() {
       </div>
 
       <FinderSection />
+
+      {/* Produkte */}
+      <section className="mx-auto mt-20 max-w-7xl px-4 sm:px-6">
+        <h2 className="text-2xl font-semibold sm:text-3xl">Mehr vom Hof</h2>
+        <p className="mt-2 max-w-2xl text-muted">Nicht nur Milch: Finde Eier, Honig, Fleisch und Käse direkt beim Erzeuger.</p>
+        <div className="mt-6"><CategoryCards counts={stats.byCategory} /></div>
+      </section>
 
       {/* Vertrauen & Transparenz */}
       <section className="mx-auto mt-20 max-w-7xl px-4 sm:px-6">

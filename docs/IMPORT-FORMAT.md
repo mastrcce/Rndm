@@ -23,8 +23,9 @@ Spaltennamen dürfen deutsch oder englisch sein (Groß-/Kleinschreibung egal). C
 | `postal_code` | `plz` | | |
 | `city` | `ort`, `stadt`, `gemeinde` | | |
 | `state` | `bundesland` | | wird aus Koordinaten bestimmt; Abweichung wird markiert |
-| `location_type` | `typ`, `art` | | `Milchautomat`/`Milchtankstelle`, `Verkaufsautomat`, `Hofladen`, `Bauernhof`, `Direktverkauf` |
-| `raw_milk` | `rohmilch` | | `ja` → „Rohmilch bestätigt“, `nein` → Zeile wird übersprungen, leer → unbestätigt |
+| `location_type` | `typ`, `art` | | `Milchautomat`/`Milchtankstelle`, `Verkaufsautomat`, `Hofladen`, `Bauernhof`, `Imkerei`, `Direktverkauf` |
+| `categories` | `produkte`, `kategorien` | | z. B. `Milch\|Eier\|Honig`, mögliche Werte: Milch, Eier, Honig, Fleisch/Wurst, Käse. Leer → Milch |
+| `raw_milk` | `rohmilch` | | `ja` → „Rohmilch bestätigt“ (Milch wird ergänzt), `nein` → Milch wird entfernt, leer → unbestätigt |
 | `opening_hours` | `oeffnungszeiten` | | möglichst OSM-Syntax, z. B. `Mo-Su 06:00-22:00` oder `24/7` |
 | `price_per_liter` | `preis` | | Euro, z. B. `1,40` |
 | `payment_methods` | `zahlungsarten`, `zahlung` | | durch `,` `;` oder `\|` getrennt; bei `;`-CSV bitte `\|` verwenden |

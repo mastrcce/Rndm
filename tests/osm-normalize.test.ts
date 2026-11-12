@@ -70,7 +70,7 @@ describe("OSM-Normalisierung", () => {
       { osmType: "node", osmId: 1, lat: 48.137, lon: 11.575, tags: { amenity: "vending_machine", vending: "milk" } }, // München
       { osmType: "node", osmId: 2, lat: 48.208, lon: 16.373, tags: { amenity: "vending_machine", vending: "milk" } }, // Wien
       { osmType: "node", osmId: 3, lat: 47.37, lon: 8.54, tags: { amenity: "vending_machine", vending: "milk" } }, // Zürich
-      { osmType: "node", osmId: 4, lat: 52.52, lon: 13.40, tags: { amenity: "vending_machine", vending: "eggs" } }, // keine Milch
+      { osmType: "node", osmId: 4, lat: 52.52, lon: 13.40, tags: { amenity: "vending_machine", vending: "potatoes" } }, // kein Produkt der Liste
     ], "test", () => {});
     expect(res.records.map((r) => r.normalized.sourceId)).toEqual(["node/1"]);
     expect(res.records[0].normalized.state).toBe("Bayern");

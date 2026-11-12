@@ -1,4 +1,4 @@
-import type { LocationType, RawMilkStatus } from "./categories";
+import type { Category, LocationType, RawMilkStatus } from "./categories";
 
 /** Kompakte Darstellung für Karte und Ergebnisliste (wird an den Browser geschickt). */
 export type MapPoint = {
@@ -16,6 +16,7 @@ export type MapPoint = {
   oh: string | null; // opening_hours
   h24: boolean | null;
   raw: RawMilkStatus;
+  cat: Category[];
   org: "verified" | "claimed" | null;
   pay: string[];
   sales: string[];
@@ -49,6 +50,7 @@ export type LocationDetail = {
   locationType: LocationType;
   salesTypes: string[];
   rawMilkStatus: RawMilkStatus;
+  categories: Category[];
   products: string[];
   description: string | null;
   notes: string | null;
@@ -74,6 +76,8 @@ export type LocationDetail = {
 };
 
 export type Stats = {
+  /** Anzahl Standorte je Produktkategorie */
+  byCategory: Record<Category, number>;
   vending: number;
   total: number;
   farms: number;

@@ -1,7 +1,7 @@
 import "server-only";
 import { randomUUID } from "node:crypto";
 import { pool, query } from "./db";
-import { LOCATION_TYPES, type LocationType } from "./categories";
+import { CATEGORIES, LOCATION_TYPES, type Category, type LocationType } from "./categories";
 import { baseSlug, contentHash, diffFields, qualityScore, shortHash } from "./import/merge";
 import { nearestPlace } from "./import/nearest-place";
 import { recomputeLocation } from "./import/pipeline";
@@ -9,7 +9,7 @@ import type { NormalizedLocation } from "./import/types";
 import { stateForPoint } from "./state-lookup";
 
 export const EDITABLE_FIELDS = [
-  "name", "address", "postal_code", "city", "latitude", "longitude", "location_type", "raw_milk_status",
+  "name", "address", "postal_code", "city", "latitude", "longitude", "location_type", "raw_milk_status", "categories",
   "description", "notes", "phone", "email", "website", "opening_hours", "is_24_7", "price_per_liter",
   "payment_methods", "organic_status", "organic_label", "image_url", "last_verified_at",
 ] as const;
@@ -30,6 +30,12 @@ export function sanitizeEdit(input: Record<string, unknown>): LocationEdit {
     if (f === "is_24_7") v = v === "true" ? true : v === "false" ? false : null;
     if (f === "payment_methods") v = v ? String(v).split(/[,;]/).map((s) => s.trim().toLowerCase()).filter(Boolean) : [];
     if (f === "location_type" && !LOCATION_TYPES.includes(v as LocationType)) continue;
+    if (f === "categories") {
+      const list = Array.isArray(input[f]) ? (input[f] as string[]) : String(input[f] ?? "").split(/[,;|]/);
+      const set = new Set(list.map((x) => x.trim()));
+      v = CATEGORIES.filter((c) => set.has(c));
+      if ((v as Category[]).length === 0) continue; // mindestens eine Kategorie
+    }
     if (f === "raw_milk_status" && !["confirmed", "unconfirmed", "not_raw"].includes(String(v))) continue;
     if (f === "organic_status" && v != null && !["verified", "claimed"].includes(String(v))) v = null;
     if (f === "website" && v && !/^https?:\/\//i.test(String(v))) v = `https://${v}`;
@@ -149,7 +155,8 @@ export async function createManualLocation(edit: LocationEdit, changeSource = "a
     locationType: type,
     salesTypes: type === "raw_milk_vending" || type === "vending_machine" ? ["automat"] : type === "farm_shop" ? ["hofladen", "direktverkauf"] : ["direktverkauf"],
     rawMilkStatus: (edit.raw_milk_status as NormalizedLocation["rawMilkStatus"]) ?? "unconfirmed",
-    products: ["milk"],
+    categories: (edit.categories as Category[] | undefined) ?? ["milk"],
+    products: [...((edit.categories as Category[] | undefined) ?? ["milk"])],
     description: (edit.description as string) ?? null,
     notes: (edit.notes as string) ?? null,
     phone: (edit.phone as string) ?? null,
@@ -215,11 +222,14 @@ export async function adminStats() {
   const byType = await query<{ location_type: string; n: number }>(
     "select location_type, count(*)::int n from locations where is_active group by 1 order by 2 desc",
   );
+  const byCategory = await query<{ category: string; n: number }>(
+    "select c as category, count(*)::int n from locations, unnest(categories) c where is_active group by 1 order by 2 desc",
+  );
   const byState = await query<{ state: string; n: number }>(
     "select coalesce(state,'?') state, count(*)::int n from locations where is_active group by 1 order by 2 desc",
   );
   const runs = await query<{ id: number; source: string; mode: string; started_at: Date; finished_at: Date | null; status: string; stats: Record<string, unknown> }>(
     "select id, source, mode, started_at, finished_at, status, stats from import_runs order by id desc limit 5",
   );
-  return { s, byType, byState, runs };
+  return { s, byType, byCategory, byState, runs };
 }

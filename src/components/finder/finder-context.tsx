@@ -66,7 +66,8 @@ export function FinderProvider({
       .then((r) => r.json())
       .then((j: { points: MapPoint[]; error?: string }) => {
         if (!alive) return;
-        setPoints(j.points ?? []);
+        // Ältere zwischengespeicherte Daten (vor Einführung der Kategorien) enthalten kein `cat`
+        setPoints((j.points ?? []).map((p) => (Array.isArray(p.cat) ? p : { ...p, cat: ["milk"] })));
         if (j.error) setError(j.error);
       })
       .catch(() => alive && setError("Standorte konnten nicht geladen werden."))

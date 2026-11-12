@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
 import { adminStats } from "@/lib/admin";
-import { LOCATION_TYPE_LABELS, type LocationType } from "@/lib/categories";
+import { CATEGORY_LABELS, LOCATION_TYPE_LABELS, type Category, type LocationType } from "@/lib/categories";
 import { formatDate } from "@/lib/utils";
 
 export const metadata = { title: "Übersicht" };
@@ -17,7 +17,7 @@ function Kpi({ label, value, href, tone }: { label: string; value: number | stri
 }
 
 export default async function AdminHome() {
-  const { s, byType, byState, runs } = await adminStats();
+  const { s, byType, byCategory, byState, runs } = await adminStats();
   const maxState = Math.max(...byState.map((x) => x.n), 1);
   return (
     <div className="space-y-8">
@@ -50,6 +50,15 @@ export default async function AdminHome() {
           <ul className="mt-3 space-y-2 text-sm">
             {byType.map((t) => (
               <li key={t.location_type} className="flex justify-between"><span>{LOCATION_TYPE_LABELS[t.location_type as LocationType]}</span><span className="tabular-nums">{t.n}</span></li>
+            ))}
+          </ul>
+          <h2 className="mt-6 text-lg font-semibold">Nach Produkt</h2>
+          <ul className="mt-3 space-y-2 text-sm">
+            {byCategory.map((t) => (
+              <li key={t.category} className="flex justify-between">
+                <Link href={`/admin/standorte?produkt=${t.category}`} className="hover:underline">{CATEGORY_LABELS[t.category as Category] ?? t.category}</Link>
+                <span className="tabular-nums">{t.n}</span>
+              </li>
             ))}
           </ul>
         </Card>

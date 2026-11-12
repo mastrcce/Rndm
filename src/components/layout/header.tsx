@@ -11,6 +11,7 @@ import { LogoMark } from "./logo";
 const NAV = [
   { href: "/#karte", label: "Karte" },
   { href: "/rohmilchautomaten", label: "Nach Bundesland" },
+  { href: "/produkte", label: "Hofprodukte" },
   { href: "/rohmilch", label: "Wissen & Hinweise" },
   { href: "/standort-vorschlagen", label: "Standort vorschlagen" },
 ];

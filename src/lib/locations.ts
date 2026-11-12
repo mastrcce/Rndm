@@ -1,11 +1,12 @@
 import "server-only";
 import { query } from "./db";
+import { CATEGORIES, type Category } from "./categories";
 import type { LocationDetail, MapPoint, PlaceResult, Stats } from "./types";
 
 const POINT_COLUMNS = `
   id, slug, name, name_is_generated as gen, location_type as type, latitude as lat, longitude as lon,
   address as addr, postal_code as pc, city, state, opening_hours as oh, is_24_7 as h24,
-  raw_milk_status as raw, organic_status as org, payment_methods as pay, sales_types as sales,
+  raw_milk_status as raw, categories as cat, organic_status as org, payment_methods as pay, sales_types as sales,
   price_per_liter::float as price, data_quality_score as q`;
 
 export async function getMapPoints(): Promise<MapPoint[]> {
@@ -19,30 +20,36 @@ export async function getPointsWhere(where: string, params: unknown[], limit = 5
   );
 }
 
-export async function getNearby(lat: number, lon: number, radiusKm: number, limit = 12, excludeId?: string) {
+export async function getNearby(lat: number, lon: number, radiusKm: number, limit = 12, excludeId?: string, category?: Category) {
   return query<MapPoint & { distance: number }>(
     `select ${POINT_COLUMNS},
             st_distance(geom, st_setsrid(st_makepoint($2,$1),4326)::geography) as distance
        from locations
       where is_active and st_dwithin(geom, st_setsrid(st_makepoint($2,$1),4326)::geography, $3)
         and ($5::uuid is null or id <> $5::uuid)
+        and ($6::text is null or $6::text = any(categories))
       order by distance limit $4`,
-    [lat, lon, radiusKm * 1000, limit, excludeId ?? null],
+    [lat, lon, radiusKm * 1000, limit, excludeId ?? null, category ?? null],
   );
 }
 
 export async function getStats(): Promise<Stats> {
   const [r] = await query<{
     vending: number; total: number; farms: number; states: number; raw_confirmed: number; last_import: string | null;
+    by_category: Record<string, number>;
   }>(`select
-      count(*) filter (where location_type in ('raw_milk_vending','vending_machine'))::int as vending,
+      count(*) filter (where location_type in ('raw_milk_vending','vending_machine') and 'milk' = any(categories))::int as vending,
       count(*)::int as total,
       count(*) filter (where location_type in ('farm_shop','farm'))::int as farms,
+      (select coalesce(json_object_agg(c, n), '{}') from (select c, count(*)::int n from locations, unnest(categories) c
+         where is_active group by c) x) as by_category,
       count(distinct state)::int as states,
       count(*) filter (where raw_milk_status = 'confirmed')::int as raw_confirmed,
       (select max(finished_at) from import_runs where status = 'success')::text as last_import
     from locations where is_active`);
+  const byCategory = Object.fromEntries(CATEGORIES.map((c) => [c, r.by_category?.[c] ?? 0])) as Record<Category, number>;
   return {
+    byCategory,
     vending: r.vending,
     total: r.total,
     farms: r.farms,
@@ -52,11 +59,12 @@ export async function getStats(): Promise<Stats> {
   };
 }
 
-export async function getStateCounts(): Promise<{ state: string; total: number; vending: number }[]> {
+export async function getStateCounts(category: Category = "milk"): Promise<{ state: string; total: number; vending: number }[]> {
   return query(
     `select state, count(*)::int as total,
             count(*) filter (where location_type in ('raw_milk_vending','vending_machine'))::int as vending
-       from locations where is_active and state is not null group by state order by state`,
+       from locations where is_active and state is not null and $1 = any(categories) group by state order by state`,
+    [category],
   );
 }
 
@@ -79,6 +87,7 @@ function toDetail(r: DetailRow, sources: LocationDetail["sources"]): LocationDet
     locationType: r.location_type as LocationDetail["locationType"],
     salesTypes: r.sales_types as string[],
     rawMilkStatus: r.raw_milk_status as LocationDetail["rawMilkStatus"],
+    categories: (r.categories as Category[]) ?? ["milk"],
     products: r.products as string[],
     description: r.description as string | null,
     notes: r.notes as string | null,
@@ -152,14 +161,14 @@ export async function getPlaceBySlug(kind: "city" | "state", slug: string) {
 }
 
 /** Städte mit den meisten Standorten (für SEO-Landingpages und Sitemap). */
-export async function getTopCities(limit = 60, minCount = 1) {
+export async function getTopCities(limit = 60, minCount = 1, category: Category = "milk") {
   return query<{ city: string; slug: string; state: string | null; total: number }>(
     `select l.city, p.slug, mode() within group (order by l.state) as state, count(*)::int as total
        from locations l join places p on p.kind = 'city' and lower(p.name) = lower(l.city)
-      where l.is_active and l.city is not null
+      where l.is_active and l.city is not null and $3 = any(l.categories)
       group by l.city, p.slug having count(*) >= $2
       order by total desc, l.city limit $1`,
-    [limit, minCount],
+    [limit, minCount, category],
   );
 }
 

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { MiniMapClient } from "@/components/location/mini-map-client";
 import { Button } from "@/components/ui/button";
 import { Input, Label, Select, Textarea } from "@/components/ui/input";
-import { LOCATION_TYPE_LABELS, LOCATION_TYPES } from "@/lib/categories";
+import { CATEGORIES, CATEGORY_LABELS, LOCATION_TYPE_LABELS, LOCATION_TYPES, type Category } from "@/lib/categories";
 import { REPORT_REASONS } from "@/lib/submissions";
 
 type Kind = "report" | "suggestion" | "addition";
@@ -31,6 +31,7 @@ const FIELD_LABELS: { key: string; label: string; placeholder?: string; type?: s
 
 export function SubmissionForm({ kind, locationId, locationName, initialPosition }: Props) {
   const [values, setValues] = useState<Record<string, string>>({});
+  const [cats, setCats] = useState<Category[]>(kind === "suggestion" ? ["milk"] : []);
   const [reason, setReason] = useState("wrong_info");
   const [message, setMessage] = useState("");
   const [email, setEmail] = useState("");
@@ -51,6 +52,7 @@ export function SubmissionForm({ kind, locationId, locationName, initialPosition
       if (!v.trim()) continue;
       fields[k] = k === "price_per_liter" ? v.replace(",", ".") : v;
     }
+    if (cats.length) fields.categories = cats;
     if (kind === "suggestion" && pos) {
       fields.latitude = pos.lat;
       fields.longitude = pos.lon;
@@ -128,6 +130,25 @@ export function SubmissionForm({ kind, locationId, locationName, initialPosition
       )}
 
       {(kind === "suggestion" || kind === "addition") && (
+        <fieldset>
+          <legend className="mb-2 text-sm font-medium text-forest-900">
+            {kind === "suggestion" ? "Was gibt es dort?" : "Welche Produkte gibt es dort? (nur ankreuzen, wenn du es sicher weißt)"}
+          </legend>
+          <div className="flex flex-wrap gap-2">
+            {CATEGORIES.map((c) => {
+              const on = cats.includes(c);
+              return (
+                <label key={c} className={`inline-flex cursor-pointer items-center gap-2 rounded-full border px-3 py-1.5 text-sm ${on ? "border-forest-800 bg-forest-800 text-cream-50" : "border-line bg-white text-forest-900"}`}>
+                  <input type="checkbox" className="sr-only" checked={on} onChange={() => setCats((s) => (on ? s.filter((x) => x !== c) : [...s, c]))} />
+                  {CATEGORY_LABELS[c]}
+                </label>
+              );
+            })}
+          </div>
+        </fieldset>
+      )}
+
+      {(kind === "suggestion" || kind === "addition") && (
         <fieldset className="grid gap-4 sm:grid-cols-2">
           <legend className="mb-2 text-sm text-muted sm:col-span-2">
             {kind === "addition" ? "Fülle nur die Felder aus, die du ergänzen oder korrigieren möchtest." : "Je mehr du angibst, desto schneller können wir den Standort prüfen."}
@@ -195,7 +216,7 @@ export function SubmissionForm({ kind, locationId, locationName, initialPosition
 
       {error && <p className="rounded-xl bg-warn-bg px-4 py-3 text-sm text-warn-fg" role="alert">{error}</p>}
 
-      <Button type="submit" size="lg" disabled={status === "sending" || !consent}>
+      <Button type="submit" size="lg" disabled={status === "sending" || !consent || (kind === "suggestion" && cats.length === 0)}>
         {status === "sending" && <Loader2 className="animate-spin" />} Absenden
       </Button>
     </form>

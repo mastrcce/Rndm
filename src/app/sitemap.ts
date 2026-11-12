@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getAllSlugs, getTopCities } from "@/lib/locations";
 import { safe } from "@/lib/server/safe";
+import { CATEGORY_SLUGS } from "@/lib/categories";
 import { STATES } from "@/lib/states";
 import { siteUrl } from "@/lib/utils";
 
@@ -13,6 +14,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: siteUrl("/"), lastModified: now, changeFrequency: "daily", priority: 1 },
     { url: siteUrl("/rohmilchautomaten"), lastModified: now, changeFrequency: "daily", priority: 0.9 },
     ...STATES.map((s) => ({ url: siteUrl(`/rohmilchautomaten/${s.slug}`), lastModified: now, changeFrequency: "weekly" as const, priority: 0.8 })),
+    { url: siteUrl("/produkte"), lastModified: now, changeFrequency: "weekly", priority: 0.8 },
+    ...(["eggs", "honey", "meat", "cheese"] as const).flatMap((c) => [
+      { url: siteUrl(`/${CATEGORY_SLUGS[c]}`), lastModified: now, changeFrequency: "weekly" as const, priority: 0.8 },
+      ...STATES.map((s) => ({ url: siteUrl(`/${CATEGORY_SLUGS[c]}/${s.slug}`), lastModified: now, changeFrequency: "weekly" as const, priority: 0.6 })),
+    ]),
     ...cities.map((c) => ({ url: siteUrl(`/rohmilch-in-${c.slug}`), lastModified: now, changeFrequency: "weekly" as const, priority: 0.7 })),
     ...slugs.map((s) => ({ url: siteUrl(`/standort/${s.slug}`), lastModified: s.updated_at, changeFrequency: "weekly" as const, priority: 0.6 })),
     { url: siteUrl("/rohmilch"), changeFrequency: "monthly", priority: 0.5 },
