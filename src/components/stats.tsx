@@ -1,5 +1,7 @@
 import { CategoryIcon } from "@/components/category-icon";
-import { CATEGORIES, CATEGORY_LABELS } from "@/lib/categories";
+import { CATEGORIES, type Category } from "@/lib/categories";
+
+const WITH: Record<Category, string> = { milk: "Milch", eggs: "Eiern", honey: "Honig", meat: "Fleisch & Wurst", cheese: "Käse" };
 import type { Stats } from "@/lib/types";
 
 export function StatsGrid({ stats }: { stats: Stats }) {
@@ -25,7 +27,7 @@ export function StatsGrid({ stats }: { stats: Stats }) {
       {CATEGORIES.map((c) => (
         <li key={c} className="inline-flex items-center gap-1.5">
           <CategoryIcon category={c} className="size-4 text-sage-600" />
-          <span><strong className="font-semibold tabular-nums text-forest-900">{stats.byCategory[c].toLocaleString("de-DE")}</strong> mit {CATEGORY_LABELS[c]}</span>
+          <span><strong className="font-semibold tabular-nums text-forest-900">{stats.byCategory[c].toLocaleString("de-DE")}</strong> mit {WITH[c]}</span>
         </li>
       ))}
     </ul>
