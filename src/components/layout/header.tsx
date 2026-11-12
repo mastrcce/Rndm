@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { InstallButton } from "../pwa/install-button";
 import { LogoMark } from "./logo";
 
 const NAV = [
@@ -54,6 +55,7 @@ export function Header() {
               {n.label}
             </Link>
           ))}
+          <InstallButton variant="primary" className="mt-2 w-full" />
         </nav>
       )}
     </header>

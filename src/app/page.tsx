@@ -3,6 +3,7 @@ import Link from "next/link";
 import { FinderProvider } from "@/components/finder/finder-context";
 import { FinderSection } from "@/components/finder/finder-section";
 import { SearchBox } from "@/components/finder/search-box";
+import { InstallButton } from "@/components/pwa/install-button";
 import { SafetyNotice } from "@/components/safety-notice";
 import { StatsGrid } from "@/components/stats";
 import { getStateCounts, getStats } from "@/lib/locations";
@@ -84,6 +85,19 @@ export default async function HomePage() {
               <p className="mt-2 text-sm leading-relaxed text-muted">{text}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* App */}
+      <section className="mx-auto mt-20 max-w-7xl px-4 sm:px-6">
+        <div className="flex flex-col items-start justify-between gap-6 rounded-xl2 bg-forest-900 p-8 text-cream-50 shadow-lift sm:flex-row sm:items-center sm:p-10">
+          <div>
+            <h2 className="text-2xl font-semibold text-cream-50 sm:text-3xl">Rohmilch-Atlas als App</h2>
+            <p className="mt-2 max-w-xl text-cream-200/90">
+              Auf den Startbildschirm legen – kostenlos, ohne App Store. Mit Favoriten und Karte auch offline.
+            </p>
+          </div>
+          <InstallButton variant="secondary" className="shrink-0" />
         </div>
       </section>
 

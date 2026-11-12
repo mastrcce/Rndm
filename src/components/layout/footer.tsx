@@ -26,6 +26,7 @@ export function Footer() {
             <li><Link href="/rohmilchautomaten" className="hover:text-white">Milchautomaten nach Bundesland</Link></li>
             <li><Link href="/standort-vorschlagen" className="hover:text-white">Standort vorschlagen</Link></li>
             <li><Link href="/favoriten" className="hover:text-white">Meine Favoriten</Link></li>
+            <li><Link href="/app" className="hover:text-white">Als App installieren</Link></li>
           </ul>
         </div>
         <div>

@@ -21,6 +21,7 @@ Dublettenprüfung und Moderation.
 - **Nutzerfunktionen**: Favoriten (lokal im Browser), Teilen, Fehler melden, Infos ergänzen, Standort vorschlagen.
   Alles wird vor der Veröffentlichung moderiert
 - **SEO**: `/rohmilchautomaten`, `/rohmilchautomaten/bayern`, `/rohmilch-in-rosenheim`, Sitemap, robots.txt, Open Graph, ISR
+- **App** (PWA): auf dem Startbildschirm installierbar (iPhone, Android, Desktop), mit Offline-Betrieb für Karte, Favoriten und besuchte Seiten. Siehe [docs/APP.md](docs/APP.md)
 - **Admin** (`/admin`): Standorte verwalten, anlegen, bearbeiten und löschen, Importe starten (Overpass/Seed/Datei),
   Importprotokolle, Datenquellen, Dublettenprüfung mit Zusammenführen, Moderation, Qualitätsstatistiken, Änderungsprotokoll
 

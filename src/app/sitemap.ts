@@ -17,6 +17,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...slugs.map((s) => ({ url: siteUrl(`/standort/${s.slug}`), lastModified: s.updated_at, changeFrequency: "weekly" as const, priority: 0.6 })),
     { url: siteUrl("/rohmilch"), changeFrequency: "monthly", priority: 0.5 },
     { url: siteUrl("/datenquellen"), changeFrequency: "monthly", priority: 0.3 },
+    { url: siteUrl("/app"), changeFrequency: "monthly", priority: 0.4 },
     { url: siteUrl("/standort-vorschlagen"), changeFrequency: "monthly", priority: 0.3 },
   ];
 }

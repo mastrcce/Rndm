@@ -4,6 +4,8 @@ import "./globals.css";
 import type { Metadata, Viewport } from "next";
 import { Footer } from "@/components/layout/footer";
 import { Header } from "@/components/layout/header";
+import { OfflineBanner } from "@/components/pwa/offline-banner";
+import { RegisterServiceWorker } from "@/components/pwa/register-sw";
 import { siteUrl } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -21,6 +23,8 @@ export const metadata: Metadata = {
     siteName: "Rohmilch-Atlas",
   },
   twitter: { card: "summary_large_image" },
+  appleWebApp: { capable: true, title: "Rohmilch-Atlas", statusBarStyle: "default" },
+  formatDetection: { telephone: false },
   alternates: { canonical: "/" },
 };
 
@@ -28,6 +32,7 @@ export const viewport: Viewport = {
   themeColor: "#1f4d33",
   width: "device-width",
   initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -38,8 +43,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Zum Inhalt springen
         </a>
         <Header />
+        <OfflineBanner />
         <main id="inhalt">{children}</main>
         <Footer />
+        <RegisterServiceWorker />
       </body>
     </html>
   );
