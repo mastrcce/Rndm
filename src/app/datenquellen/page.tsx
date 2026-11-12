@@ -8,7 +8,7 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: "Datenquellen & Lizenzen",
-  description: "Woher die Standortdaten des Rohmilch-Finders stammen, wie sie zusammengeführt werden und unter welcher Lizenz sie stehen.",
+  description: "Woher die Standortdaten des Rohmilch-Atlas stammen, wie sie zusammengeführt werden und unter welcher Lizenz sie stehen.",
   alternates: { canonical: "/datenquellen" },
 };
 

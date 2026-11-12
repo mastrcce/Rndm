@@ -12,7 +12,7 @@ export default function PrivacyPage() {
           Entwurf – vor dem Livegang vom Betreiber zu prüfen und um Verantwortlichen, Hosting-Anbieter und Auftragsverarbeiter zu ergänzen.
         </p>
         <h2>Grundsatz</h2>
-        <p>Der Rohmilch-Finder kommt ohne Nutzerkonto, ohne Tracking und ohne Werbe-Cookies aus. Schriftarten werden lokal ausgeliefert.</p>
+        <p>Der Rohmilch-Atlas kommt ohne Nutzerkonto, ohne Tracking und ohne Werbe-Cookies aus. Schriftarten werden lokal ausgeliefert.</p>
         <h2>Standortfreigabe</h2>
         <p>
           Wenn du „Standort verwenden“ wählst, fragt dein Browser um Erlaubnis. Die Koordinaten werden ausschließlich in deinem

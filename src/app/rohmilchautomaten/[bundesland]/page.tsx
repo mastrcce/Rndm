@@ -7,14 +7,15 @@ import { SearchBox } from "@/components/finder/search-box";
 import { RegionList } from "@/components/region-list";
 import { SafetyNotice } from "@/components/safety-notice";
 import { getPlaceBySlug, getPointsWhere, getTopCities } from "@/lib/locations";
-import { STATES, stateBySlug } from "@/lib/states";
+import { stateBySlug } from "@/lib/states";
 
 export const revalidate = 3600;
 
 type Props = { params: Promise<{ bundesland: string }> };
 
-export function generateStaticParams() {
-  return STATES.map((s) => ({ bundesland: s.slug }));
+/** Seiten werden beim ersten Aufruf erzeugt (ISR), damit der Build keine Datenbank braucht. */
+export async function generateStaticParams() {
+  return [];
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

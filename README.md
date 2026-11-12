@@ -1,4 +1,4 @@
-# Rohmilch-Finder Deutschland
+# Rohmilch-Atlas Deutschland
 
 Verzeichnis von Rohmilchautomaten, Milchtankstellen, Hofläden und Bauernhöfen mit Milchverkauf in Deutschland:
 eine interaktive Karte, Suche nach Ort, PLZ und Umkreis, Detailseiten und ein Admin-Dashboard mit Datenimport,

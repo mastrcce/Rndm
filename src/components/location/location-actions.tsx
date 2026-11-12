@@ -14,7 +14,7 @@ export function LocationActions({ id, slug, name }: { id: string; slug: string; 
     const url = window.location.href;
     if (navigator.share) {
       try {
-        await navigator.share({ title: name, text: `${name} – Rohmilch-Finder`, url });
+        await navigator.share({ title: name, text: `${name} – Rohmilch-Atlas`, url });
         return;
       } catch {
         /* abgebrochen */

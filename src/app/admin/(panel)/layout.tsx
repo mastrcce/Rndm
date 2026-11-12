@@ -21,7 +21,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   return (
     <div className="mx-auto grid max-w-7xl gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[220px_1fr]">
       <aside className="lg:sticky lg:top-6 lg:self-start">
-        <Link href="/" className="font-display text-lg font-semibold text-forest-900">Rohmilch-Finder</Link>
+        <Link href="/" className="font-display text-lg font-semibold text-forest-900">Rohmilch-Atlas</Link>
         <p className="text-xs uppercase tracking-widest text-sage-600">Administration</p>
         <nav className="mt-4 flex gap-1 overflow-x-auto lg:flex-col" aria-label="Admin-Navigation">
           {NAV.map(({ href, label, icon: Icon }) => (

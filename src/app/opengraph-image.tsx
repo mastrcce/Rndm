@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Rohmilch-Finder – Rohmilchautomaten und Hofläden in Deutschland";
+export const alt = "Rohmilch-Atlas – Rohmilchautomaten und Hofläden in Deutschland";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -12,7 +12,7 @@ export default function OgImage() {
           <div style={{ width: 72, height: 72, borderRadius: 20, background: "#1f4d33", display: "flex", alignItems: "center", justifyContent: "center" }}>
             <div style={{ width: 26, height: 44, background: "#fdfbf6", borderRadius: 6 }} />
           </div>
-          <div style={{ fontSize: 40, color: "#173424", fontWeight: 700 }}>Rohmilch-Finder</div>
+          <div style={{ fontSize: 40, color: "#173424", fontWeight: 700 }}>Rohmilch-Atlas</div>
         </div>
         <div style={{ display: "flex", flexDirection: "column" }}>
           <div style={{ fontSize: 76, color: "#173424", fontWeight: 700, lineHeight: 1.05 }}>Finde frische Rohmilch in deiner Nähe.</div>

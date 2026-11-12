@@ -1,4 +1,4 @@
--- Rohmilch-Finder Deutschland – Grundschema
+-- Rohmilch-Atlas Deutschland – Grundschema
 -- Kompatibel mit PostgreSQL >= 14 + PostGIS 3 (lokal und Supabase).
 
 create extension if not exists postgis;

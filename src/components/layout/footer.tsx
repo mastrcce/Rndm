@@ -8,7 +8,7 @@ export function Footer() {
         <div className="md:col-span-2">
           <div className="flex items-center gap-2.5">
             <LogoMark />
-            <span className="font-display text-lg font-semibold text-cream-50">Rohmilch-Finder</span>
+            <span className="font-display text-lg font-semibold text-cream-50">Rohmilch-Atlas</span>
           </div>
           <p className="mt-4 max-w-md text-sm leading-relaxed text-cream-200/80">
             Verzeichnis von Milchautomaten, Hofläden und Verkaufsstellen mit Milch ab Hof in Deutschland.

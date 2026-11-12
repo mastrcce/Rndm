@@ -29,7 +29,7 @@ export async function geocode(q: string): Promise<PlaceResult[]> {
     url.searchParams.set("limit", "5");
     url.searchParams.set("accept-language", "de");
     const res = await fetch(url, {
-      headers: { "User-Agent": process.env.NOMINATIM_USER_AGENT ?? "rohmilch-finder/0.1" },
+      headers: { "User-Agent": process.env.NOMINATIM_USER_AGENT ?? "rohmilch-atlas/0.1" },
       signal: AbortSignal.timeout(6000),
     });
     if (!res.ok) return local;

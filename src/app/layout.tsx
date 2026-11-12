@@ -9,16 +9,16 @@ import { siteUrl } from "@/lib/utils";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl()),
   title: {
-    default: "Rohmilch-Finder – Rohmilchautomaten & Hofläden in Deutschland",
-    template: "%s | Rohmilch-Finder",
+    default: "Rohmilch-Atlas – Rohmilchautomaten & Hofläden in Deutschland",
+    template: "%s | Rohmilch-Atlas",
   },
   description:
     "Finde frische Rohmilch in deiner Nähe: Rohmilchautomaten, Milchtankstellen, Hofläden und Bauernhöfe in ganz Deutschland auf einer Karte – mit Öffnungszeiten, Adressen und Navigation.",
-  applicationName: "Rohmilch-Finder",
+  applicationName: "Rohmilch-Atlas",
   openGraph: {
     type: "website",
     locale: "de_DE",
-    siteName: "Rohmilch-Finder",
+    siteName: "Rohmilch-Atlas",
   },
   twitter: { card: "summary_large_image" },
   alternates: { canonical: "/" },

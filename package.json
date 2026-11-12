@@ -1,8 +1,8 @@
 {
-  "name": "rohmilch-finder",
+  "name": "rohmilch-atlas",
   "version": "0.1.0",
   "private": true,
-  "description": "Rohmilch-Finder Deutschland – Rohmilchautomaten, Hofläden und Verkaufsstellen auf einer Karte",
+  "description": "Rohmilch-Atlas Deutschland – Rohmilchautomaten, Hofläden und Verkaufsstellen auf einer Karte",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

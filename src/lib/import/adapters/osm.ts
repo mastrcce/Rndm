@@ -54,7 +54,7 @@ export async function fetchOverpass(log: ImportLogger): Promise<OsmElement[]> {
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
       // Overpass verlangt einen beschreibenden User-Agent.
-      "User-Agent": process.env.NOMINATIM_USER_AGENT ?? "rohmilch-finder/0.1",
+      "User-Agent": process.env.NOMINATIM_USER_AGENT ?? "rohmilch-atlas/0.1",
     },
     body: new URLSearchParams({ data: OVERPASS_QUERY }).toString(),
     signal: AbortSignal.timeout(11 * 60 * 1000),

@@ -20,7 +20,7 @@ export default async function HomePage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "Rohmilch-Finder",
+    name: "Rohmilch-Atlas",
     url: siteUrl("/"),
     inLanguage: "de-DE",
     description: "Verzeichnis von Rohmilchautomaten, Hofläden und Verkaufsstellen in Deutschland.",
