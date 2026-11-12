@@ -48,7 +48,7 @@ export function Header() {
         </button>
       </div>
       {open && (
-        <nav className="border-t border-line bg-cream-50 px-4 py-3 md:hidden" aria-label="Mobile Navigation">
+        <nav className="border-t border-line bg-cream-50 px-4 py-3 transition-[opacity,transform] duration-200 ease-out starting:opacity-0 motion-safe:starting:-translate-y-1 md:hidden" aria-label="Mobile Navigation">
           {[...NAV, { href: "/favoriten", label: "Favoriten" }].map((n) => (
             <Link key={n.href} href={n.href} className="block rounded-2xl px-3 py-3 text-forest-900 hover:bg-sage-100">
               {n.label}

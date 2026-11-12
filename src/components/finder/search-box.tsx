@@ -119,7 +119,7 @@ export function SearchBox({ size = "lg", scrollToMap = true, align = "start" }: 
           </Button>
         </div>
         {open && results.length > 0 && (
-          <ul id={listId} role="listbox" className="absolute inset-x-0 top-full z-[1200] mt-2 overflow-hidden text-left rounded-2xl border border-line bg-white shadow-lift">
+          <ul id={listId} role="listbox" className="absolute inset-x-0 top-full z-[1200] mt-2 origin-top overflow-hidden rounded-2xl border border-line bg-white text-left shadow-lift transition-[opacity,transform] duration-150 ease-out starting:opacity-0 motion-safe:starting:scale-[0.98]">
             {results.map((r, i) => (
               <li key={`${r.kind}-${r.label}-${i}`} role="option" aria-selected={i === active}>
                 <button

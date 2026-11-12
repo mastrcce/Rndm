@@ -13,7 +13,7 @@ export function RegionList({ points, title }: { points: (MapPoint & { distance?:
       <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {points.map((p) => (
           <li key={p.id}>
-            <Link href={`/standort/${p.slug}`} className="block h-full rounded-xl2 border border-line bg-white p-4 shadow-soft transition motion-safe:hover:-translate-y-0.5 hover:border-sage-300">
+            <Link href={`/standort/${p.slug}`} className="block h-full rounded-xl2 border border-line bg-white p-4 shadow-soft transition-[border-color,transform] duration-200 ease-out motion-safe:hover:-translate-y-0.5 hover:border-sage-300">
               <p className="text-sm font-medium text-forest-800">{LOCATION_TYPE_LABELS[p.type]}{p.distance != null ? ` · ${formatDistance(p.distance)}` : ""}</p>
               <p className="mt-1 font-medium text-forest-900">{p.name}</p>
               <p className="mt-0.5 text-sm text-muted">{[p.addr, [p.pc, p.city].filter(Boolean).join(" ")].filter(Boolean).join(", ") || "Adresse: Keine Angabe"}</p>

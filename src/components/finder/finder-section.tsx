@@ -40,7 +40,7 @@ function Chip({ active, onClick, children, title }: { active: boolean; onClick: 
       aria-pressed={active}
       title={title}
       className={cn(
-        "inline-flex h-9 items-center gap-1.5 rounded-full border px-3 text-sm transition-colors",
+        "inline-flex h-9 items-center gap-1.5 rounded-full border px-3 text-sm transition-[color,background-color,border-color,transform] duration-150 ease-out motion-safe:active:scale-[0.97]",
         active ? "border-forest-800 bg-forest-800 text-cream-50" : "border-line bg-white text-forest-900 hover:border-sage-400",
       )}
     >
@@ -137,7 +137,7 @@ export function FinderSection({ initialBbox, title = "Alle Standorte auf der Kar
                     onClick={() => toggleCategory(c)}
                     aria-pressed={active}
                     className={cn(
-                      "inline-flex h-10 items-center gap-2 rounded-full border px-4 text-sm font-medium transition-colors",
+                      "inline-flex h-10 items-center gap-2 rounded-full border px-4 text-sm font-medium transition-[color,background-color,border-color,transform] duration-150 ease-out motion-safe:active:scale-[0.97]",
                       active ? "border-forest-800 bg-forest-800 text-cream-50" : "border-line bg-cream-50 text-forest-900 hover:border-sage-400",
                     )}
                   >
@@ -173,7 +173,7 @@ export function FinderSection({ initialBbox, title = "Alle Standorte auf der Kar
             )}
           </div>
           {showMore && (
-            <div className="mt-3 grid gap-4 border-t border-line pt-4 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-3 grid gap-4 border-t border-line pt-4 transition-[opacity,transform] duration-200 ease-out starting:opacity-0 motion-safe:starting:-translate-y-1 sm:grid-cols-2 lg:grid-cols-4">
               <fieldset className="space-y-2 sm:col-span-2 lg:col-span-4">
                 <legend className="text-sm font-medium text-forest-800">Art des Standorts</legend>
                 <div className="flex flex-wrap gap-2">
@@ -293,7 +293,7 @@ export function FinderSection({ initialBbox, title = "Alle Standorte auf der Kar
                         onClick={() => favorites.toggle(p.id)}
                         aria-pressed={favorites.has(p.id)}
                         aria-label={favorites.has(p.id) ? "Aus Favoriten entfernen" : "Zu Favoriten hinzufügen"}
-                        className="-m-1.5 grid size-10 shrink-0 place-items-center rounded-full text-muted hover:bg-sage-100 hover:text-forest-800"
+                        className="-m-1.5 grid size-10 shrink-0 place-items-center rounded-full text-muted transition-[color,background-color,transform] duration-150 ease-out hover:bg-sage-100 hover:text-forest-800 motion-safe:active:scale-90"
                       >
                         <Heart className={cn("size-4", favorites.has(p.id) && "fill-forest-800 text-forest-800")} />
                       </button>
