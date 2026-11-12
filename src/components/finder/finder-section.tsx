@@ -232,7 +232,7 @@ export function FinderSection({ initialBbox, title = "Alle Standorte auf der Kar
 
         {/* Liste + Karte */}
         <div className="mt-4 grid gap-4 lg:grid-cols-[400px_1fr]">
-          <div className={cn("flex min-h-0 flex-col rounded-xl2 border border-line bg-white shadow-soft lg:h-[680px]", mobileView === "map" && "hidden lg:flex")}>
+          <div className={cn("flex min-h-0 min-w-0 flex-col rounded-xl2 border border-line bg-white shadow-soft lg:h-[680px]", mobileView === "map" && "hidden lg:flex")}>
             <div className="flex items-center justify-between gap-2 border-b border-line px-4 py-3">
               <p className="text-sm text-muted">
                 <strong className="font-semibold text-forest-900">{visible.length.toLocaleString("de-DE")}</strong> im Kartenausschnitt
@@ -240,8 +240,8 @@ export function FinderSection({ initialBbox, title = "Alle Standorte auf der Kar
               <label className="flex h-9 items-center gap-1 text-sm text-muted">
                 <ArrowUpDown className="size-3.5" aria-hidden />
                 <span className="sr-only">Sortierung</span>
-                <select value={f.sort} onChange={(e) => f.setSort(e.target.value as SortMode)} className="h-full bg-transparent font-medium text-forest-900 focus:outline-none">
-                  <option value="distance" disabled={!f.origin}>Entfernung{f.origin ? "" : " (Ort wählen)"}</option>
+                <select value={f.sort} onChange={(e) => f.setSort(e.target.value as SortMode)} title={f.origin ? undefined : "Nach Entfernung sortieren: erst Ort suchen oder Standort verwenden"} className="h-full max-w-[9.5rem] bg-transparent font-medium text-forest-900 focus:outline-none">
+                  <option value="distance" disabled={!f.origin}>Entfernung</option>
                   <option value="name">Name</option>
                   <option value="quality">Vollständigkeit</option>
                 </select>

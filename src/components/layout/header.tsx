@@ -25,7 +25,7 @@ export function Header() {
   }
   if (pathname.startsWith("/admin")) return null;
   return (
-    <header className="sticky top-0 z-[1100] border-b border-line/80 bg-cream-100/90 backdrop-blur supports-[backdrop-filter]:bg-cream-100/75">
+    <header className="sticky top-0 z-[1100] border-b border-line/80 bg-cream-100">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
         <Link href="/" className="flex items-center gap-2.5" aria-label="Rohmilch-Atlas – Startseite">
           <LogoMark />
