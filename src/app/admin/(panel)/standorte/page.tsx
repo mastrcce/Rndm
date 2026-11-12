@@ -45,10 +45,10 @@ export default async function AdminLocations({ searchParams }: { searchParams: S
   return (
     <div>
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-3xl font-semibold">Standorte <span className="text-lg text-muted">({n.toLocaleString("de-DE")})</span></h1>
+        <h1 className="text-3xl font-medium">Standorte <span className="text-lg text-muted">({n.toLocaleString("de-DE")})</span></h1>
         <Button asChild><Link href="/admin/standorte/neu">Neuer Standort</Link></Button>
       </div>
-      {sp.geloescht && <p className="mt-3 rounded-xl bg-sage-100 px-4 py-2 text-sm">Standort gelöscht.</p>}
+      {sp.geloescht && <p className="mt-3 rounded-2xl bg-sage-100 px-4 py-2 text-sm">Standort gelöscht.</p>}
       <form className="mt-4 grid gap-2 rounded-xl2 border border-line bg-white p-3 sm:grid-cols-3 lg:grid-cols-8">
         <Input name="q" defaultValue={sp.q} placeholder="Name, Ort, PLZ …" className="lg:col-span-2" />
         <Select name="land" defaultValue={sp.land ?? ""}><option value="">Alle Länder</option>{STATES.map((s) => <option key={s.slug} value={s.name}>{s.name}</option>)}</Select>

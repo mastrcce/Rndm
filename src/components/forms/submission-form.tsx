@@ -85,7 +85,7 @@ export function SubmissionForm({ kind, locationId, locationName, initialPosition
     return (
       <div className="rounded-xl2 border border-line bg-white p-8 text-center shadow-soft">
         <CheckCircle2 className="mx-auto size-10 text-sage-600" aria-hidden />
-        <h2 className="mt-3 text-2xl font-semibold">Vielen Dank!</h2>
+        <h2 className="mt-3 text-2xl font-medium">Vielen Dank!</h2>
         <p className="mt-2 text-muted">
           Dein Beitrag ist eingegangen und wird vor der Veröffentlichung von uns geprüft.
         </p>
@@ -96,7 +96,7 @@ export function SubmissionForm({ kind, locationId, locationName, initialPosition
   return (
     <form onSubmit={submit} className="space-y-6 rounded-xl2 border border-line bg-white p-5 shadow-soft sm:p-8">
       {locationName && (
-        <p className="rounded-xl bg-cream-50 px-4 py-3 text-sm">
+        <p className="rounded-2xl bg-cream-50 px-4 py-3 text-sm">
           Standort: <strong className="text-forest-900">{locationName}</strong>
         </p>
       )}
@@ -171,7 +171,7 @@ export function SubmissionForm({ kind, locationId, locationName, initialPosition
         <div>
           <Label>Position auf der Karte</Label>
           <p className="mb-2 text-sm text-muted">Klicke in die Karte oder ziehe den Marker an die richtige Stelle (optional, wenn die Adresse angegeben ist).</p>
-          <div className="overflow-hidden rounded-xl border border-line">
+          <div className="overflow-hidden rounded-2xl border border-line">
             <MiniMapClient
               lat={pos?.lat ?? 51.1}
               lon={pos?.lon ?? 10.4}
@@ -214,7 +214,7 @@ export function SubmissionForm({ kind, locationId, locationName, initialPosition
         </span>
       </label>
 
-      {error && <p className="rounded-xl bg-warn-bg px-4 py-3 text-sm text-warn-fg" role="alert">{error}</p>}
+      {error && <p className="rounded-2xl bg-warn-bg px-4 py-3 text-sm text-warn-fg" role="alert">{error}</p>}
 
       <Button type="submit" size="lg" disabled={status === "sending" || !consent || (kind === "suggestion" && cats.length === 0)}>
         {status === "sending" && <Loader2 className="animate-spin" />} Absenden

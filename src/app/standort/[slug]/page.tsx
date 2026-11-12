@@ -129,7 +129,7 @@ export default async function LocationPage({ params }: Props) {
       </nav>
 
       {!l.isActive && (
-        <p className="mt-4 rounded-xl bg-warn-bg px-4 py-3 text-sm text-warn-fg">
+        <p className="mt-4 rounded-2xl bg-warn-bg px-4 py-3 text-sm text-warn-fg">
           Dieser Standort ist in unseren Datenquellen nicht mehr enthalten und möglicherweise geschlossen.
         </p>
       )}
@@ -148,7 +148,7 @@ export default async function LocationPage({ params }: Props) {
             ))}
             {l.organicStatus && <Badge>{l.organicStatus === "verified" ? "Bio (geprüft)" : `Bio laut Quelle${l.organicLabel ? ` · ${l.organicLabel}` : ""}`}</Badge>}
           </div>
-          <h1 className="mt-3 text-3xl font-semibold leading-tight sm:text-5xl">{l.name}</h1>
+          <h1 className="mt-3 text-3xl font-medium leading-tight sm:text-5xl">{l.name}</h1>
           {l.nameIsGenerated && (
             <p className="mt-2 flex items-center gap-1.5 text-sm text-muted">
               <Info className="size-4" aria-hidden /> Die Quelle nennt keinen Namen – die Bezeichnung wurde aus Art und Lage abgeleitet.
@@ -229,10 +229,10 @@ export default async function LocationPage({ params }: Props) {
 
         <aside className="space-y-6">
           <section className="rounded-xl2 border border-line bg-white p-5 shadow-soft">
-            <h2 className="text-lg font-semibold">Herkunft der Daten</h2>
+            <h2 className="text-lg font-medium">Herkunft der Daten</h2>
             <ul className="mt-3 space-y-3 text-sm">
               {l.sources.map((s) => (
-                <li key={`${s.source}-${s.sourceId}`} className="rounded-xl bg-cream-50 p-3">
+                <li key={`${s.source}-${s.sourceId}`} className="rounded-2xl bg-cream-50 p-3">
                   <p className="font-medium text-forest-900">{s.sourceName}</p>
                   {s.sourceUrl ? (
                     <a href={s.sourceUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs text-forest-800 underline">
@@ -259,7 +259,7 @@ export default async function LocationPage({ params }: Props) {
 
           {nearby.length > 0 && (
             <section className="rounded-xl2 border border-line bg-white p-5 shadow-soft">
-              <h2 className="text-lg font-semibold">In der Nähe</h2>
+              <h2 className="text-lg font-medium">In der Nähe</h2>
               <ul className="mt-3 divide-y divide-line">
                 {nearby.map((n) => (
                   <li key={n.id} className="py-2.5">

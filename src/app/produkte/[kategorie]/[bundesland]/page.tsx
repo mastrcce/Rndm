@@ -53,7 +53,7 @@ export default async function CategoryStatePage({ params }: Props) {
         <nav aria-label="Brotkrumen" className="text-sm text-muted">
           <Link href="/" className="hover:text-forest-800">Start</Link> / <Link href={`/${CATEGORY_SLUGS[c]}`} className="hover:text-forest-800">{page.title}</Link> / <span className="text-forest-900">{s.name}</span>
         </nav>
-        <h1 className="mt-4 max-w-3xl text-4xl font-semibold sm:text-5xl">{page.headline(s.name)}</h1>
+        <h1 className="mt-4 max-w-3xl text-4xl font-medium sm:text-5xl">{page.headline(s.name)}</h1>
         <p className="mt-4 max-w-2xl text-lg text-muted">
           {points.length.toLocaleString("de-DE")} Standorte in {s.name} erfasst. {page.intro}
         </p>

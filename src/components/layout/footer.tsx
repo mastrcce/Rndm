@@ -8,7 +8,7 @@ export function Footer() {
         <div className="md:col-span-2">
           <div className="flex items-center gap-2.5">
             <LogoMark />
-            <span className="font-display text-lg font-semibold text-cream-50">Rohmilch-Atlas</span>
+            <span className="font-display text-lg font-medium text-cream-50">Rohmilch-Atlas</span>
           </div>
           <p className="mt-4 max-w-md text-sm leading-relaxed text-cream-200/80">
             Verzeichnis von Milchautomaten, Hofläden und Verkaufsstellen mit Milch ab Hof in Deutschland.
@@ -16,7 +16,7 @@ export function Footer() {
           </p>
         </div>
         <div>
-          <h2 className="font-sans text-xs font-semibold uppercase tracking-widest text-sage-300">Verzeichnis</h2>
+          <h2 className="font-sans text-xs font-medium uppercase tracking-widest text-sage-300">Verzeichnis</h2>
           <ul className="mt-3 space-y-2 text-sm">
             <li><Link href="/#karte" className="hover:text-white">Karte</Link></li>
             <li><Link href="/rohmilchautomaten" className="hover:text-white">Milchautomaten nach Bundesland</Link></li>
@@ -30,7 +30,7 @@ export function Footer() {
           </ul>
         </div>
         <div>
-          <h2 className="font-sans text-xs font-semibold uppercase tracking-widest text-sage-300">Informationen</h2>
+          <h2 className="font-sans text-xs font-medium uppercase tracking-widest text-sage-300">Informationen</h2>
           <ul className="mt-3 space-y-2 text-sm">
             <li><Link href="/rohmilch" className="hover:text-white">Wissen & Hygienehinweise</Link></li>
             <li><Link href="/datenquellen" className="hover:text-white">Datenquellen & Lizenzen</Link></li>

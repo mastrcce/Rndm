@@ -21,7 +21,7 @@ export default async function VendingOverview() {
   return (
     <FinderProvider initialFilters={{ types: ["raw_milk_vending", "vending_machine"] }}>
       <section className="mx-auto max-w-7xl px-4 pb-10 pt-12 sm:px-6">
-        <h1 className="max-w-3xl text-4xl font-semibold sm:text-5xl">Rohmilchautomaten in Deutschland</h1>
+        <h1 className="max-w-3xl text-4xl font-medium sm:text-5xl">Rohmilchautomaten in Deutschland</h1>
         <p className="mt-4 max-w-2xl text-lg text-muted">
           {total.toLocaleString("de-DE")} Milch- und Verkaufsautomaten mit Milch sind derzeit erfasst. Wähle dein Bundesland oder suche direkt nach deinem Ort.
         </p>
@@ -31,7 +31,7 @@ export default async function VendingOverview() {
             const c = counts.find((x) => x.state === s.name);
             return (
               <li key={s.slug}>
-                <Link href={`/rohmilchautomaten/${s.slug}`} className="flex items-center justify-between rounded-xl border border-line bg-white px-4 py-3 text-sm hover:border-sage-400 hover:shadow-soft">
+                <Link href={`/rohmilchautomaten/${s.slug}`} className="flex items-center justify-between rounded-2xl border border-line bg-white px-4 py-3 text-sm hover:border-sage-400 hover:shadow-soft">
                   <span className="font-medium text-forest-900">{s.name}</span>
                   <span className="text-muted"><span className="tabular-nums">{c?.vending ?? 0}</span> Automaten</span>
                 </Link>
@@ -43,7 +43,7 @@ export default async function VendingOverview() {
       <FinderSection title="Milch- und Verkaufsautomaten auf der Karte" />
       {cities.length > 0 && (
         <section className="mx-auto mt-16 max-w-7xl px-4 sm:px-6">
-          <h2 className="text-2xl font-semibold sm:text-3xl">Rohmilch in deiner Stadt</h2>
+          <h2 className="text-2xl font-medium sm:text-3xl">Rohmilch in deiner Stadt</h2>
           <ul className="mt-6 flex flex-wrap gap-2">
             {cities.map((c) => (
               <li key={c.slug}>

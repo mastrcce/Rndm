@@ -1,5 +1,6 @@
-import "@fontsource-variable/inter";
-import "@fontsource-variable/fraunces";
+import "@fontsource-variable/nunito";
+// Fraunces mit „SOFT“-Achse für weich gerundete Überschriften
+import "@fontsource-variable/fraunces/soft.css";
 import "./globals.css";
 import type { Metadata, Viewport } from "next";
 import { Footer } from "@/components/layout/footer";

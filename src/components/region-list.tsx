@@ -9,7 +9,7 @@ export function RegionList({ points, title }: { points: (MapPoint & { distance?:
   if (!points.length) return null;
   return (
     <section className="mx-auto mt-16 max-w-7xl px-4 sm:px-6">
-      <h2 className="text-2xl font-semibold sm:text-3xl">{title}</h2>
+      <h2 className="text-2xl font-medium sm:text-3xl">{title}</h2>
       <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {points.map((p) => (
           <li key={p.id}>

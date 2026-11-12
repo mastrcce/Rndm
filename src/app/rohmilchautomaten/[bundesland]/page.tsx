@@ -48,7 +48,7 @@ export default async function StatePage({ params }: Props) {
         <nav aria-label="Brotkrumen" className="text-sm text-muted">
           <Link href="/" className="hover:text-forest-800">Start</Link> / <Link href="/rohmilchautomaten" className="hover:text-forest-800">Rohmilchautomaten</Link> / <span className="text-forest-900">{s.name}</span>
         </nav>
-        <h1 className="mt-4 max-w-3xl text-4xl font-semibold sm:text-5xl">Rohmilch in {s.name}</h1>
+        <h1 className="mt-4 max-w-3xl text-4xl font-medium sm:text-5xl">Rohmilch in {s.name}</h1>
         <p className="mt-4 max-w-2xl text-lg text-muted">
           In {s.name} sind {points.length.toLocaleString("de-DE")} Verkaufsstellen mit Milch ab Hof erfasst, davon {vending.toLocaleString("de-DE")} Automaten
           und {points.filter((p) => p.raw === "confirmed").length.toLocaleString("de-DE")} mit ausdrücklich bestätigter Rohmilch.

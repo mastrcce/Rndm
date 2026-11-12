@@ -29,7 +29,7 @@ export function Header() {
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 sm:px-6">
         <Link href="/" className="flex items-center gap-2.5" aria-label="Rohmilch-Atlas – Startseite">
           <LogoMark />
-          <span className="font-display text-lg font-semibold tracking-tight text-forest-900">
+          <span className="font-display text-lg font-medium tracking-tight text-forest-900">
             Rohmilch<span className="text-sage-600">-Atlas</span>
           </span>
         </Link>
@@ -50,7 +50,7 @@ export function Header() {
       {open && (
         <nav className="border-t border-line bg-cream-50 px-4 py-3 md:hidden" aria-label="Mobile Navigation">
           {[...NAV, { href: "/favoriten", label: "Favoriten" }].map((n) => (
-            <Link key={n.href} href={n.href} className="block rounded-xl px-3 py-3 text-forest-900 hover:bg-sage-100">
+            <Link key={n.href} href={n.href} className="block rounded-2xl px-3 py-3 text-forest-900 hover:bg-sage-100">
               {n.label}
             </Link>
           ))}

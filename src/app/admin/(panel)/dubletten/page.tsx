@@ -21,7 +21,7 @@ export default async function DuplicatesPage() {
      from duplicate_candidates c where c.status = 'open' order by c.score desc, c.distance_m limit 100`,
   );
   const side = (s: Side) => (
-    <div className="min-w-0 rounded-xl bg-cream-50 p-3 text-sm">
+    <div className="min-w-0 rounded-2xl bg-cream-50 p-3 text-sm">
       <Link href={`/admin/standorte/${s.id}`} className="font-medium text-forest-900 hover:underline">{s.name}</Link>
       <p className="text-muted">{LOCATION_TYPE_LABELS[s.location_type]} · Qualität {s.data_quality_score}</p>
       <p className="text-muted">{[s.address, s.city].filter(Boolean).join(", ") || "keine Adresse"}</p>
@@ -31,7 +31,7 @@ export default async function DuplicatesPage() {
   return (
     <div>
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-3xl font-semibold">Dublettenprüfung <span className="text-lg text-muted">({rows.length})</span></h1>
+        <h1 className="text-3xl font-medium">Dublettenprüfung <span className="text-lg text-muted">({rows.length})</span></h1>
         <form action={runDuplicateScan}><Button variant="secondary">Gesamten Bestand scannen</Button></form>
       </div>
       <p className="mt-2 text-sm text-muted">

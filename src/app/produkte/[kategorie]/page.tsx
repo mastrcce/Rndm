@@ -50,7 +50,7 @@ export default async function CategoryPage({ params }: Props) {
         <p className="inline-flex items-center gap-2 rounded-full border border-sage-300 bg-white/70 px-3 py-1 text-xs font-medium text-forest-800">
           <CategoryIcon category={c} className="size-3.5" /> {CATEGORY_LABELS[c]}
         </p>
-        <h1 className="mt-4 max-w-3xl text-4xl font-semibold sm:text-5xl">{page.headline("Deutschland")}</h1>
+        <h1 className="mt-4 max-w-3xl text-4xl font-medium sm:text-5xl">{page.headline("Deutschland")}</h1>
         <p className="mt-4 max-w-2xl text-lg text-muted">
           {total.toLocaleString("de-DE")} Standorte erfasst. {page.intro}
         </p>
@@ -60,7 +60,7 @@ export default async function CategoryPage({ params }: Props) {
             const n = counts.find((x) => x.state === s.name)?.total ?? 0;
             return (
               <li key={s.slug}>
-                <Link href={`/${CATEGORY_SLUGS[c]}/${s.slug}`} className="flex items-center justify-between rounded-xl border border-line bg-white px-4 py-3 text-sm hover:border-sage-400 hover:shadow-soft">
+                <Link href={`/${CATEGORY_SLUGS[c]}/${s.slug}`} className="flex items-center justify-between rounded-2xl border border-line bg-white px-4 py-3 text-sm hover:border-sage-400 hover:shadow-soft">
                   <span className="font-medium text-forest-900">{s.name}</span>
                   <span className="tabular-nums text-muted">{n}</span>
                 </Link>
@@ -73,7 +73,7 @@ export default async function CategoryPage({ params }: Props) {
       <FinderSection title={`${page.title} auf der Karte`} />
       {cities.length > 0 && (
         <section className="mx-auto mt-16 max-w-7xl px-4 sm:px-6">
-          <h2 className="text-2xl font-semibold sm:text-3xl">Orte mit den meisten Standorten</h2>
+          <h2 className="text-2xl font-medium sm:text-3xl">Orte mit den meisten Standorten</h2>
           <ul className="mt-6 flex flex-wrap gap-2">
             {cities.map((x) => (
               <li key={x.slug} className="inline-flex rounded-full border border-line bg-white px-3 py-1.5 text-sm text-forest-900">

@@ -47,7 +47,7 @@ export default async function CityPage({ params }: Props) {
           {state && <> / <Link href={`/rohmilchautomaten/${state.slug}`} className="hover:text-forest-800">{state.name}</Link></>}
           {" "}/ <span className="text-forest-900">{place.name}</span>
         </nav>
-        <h1 className="mt-4 max-w-3xl text-4xl font-semibold sm:text-5xl">Rohmilch in {place.name}</h1>
+        <h1 className="mt-4 max-w-3xl text-4xl font-medium sm:text-5xl">Rohmilch in {place.name}</h1>
         <p className="mt-4 max-w-2xl text-lg text-muted">
           {points.length
             ? `${points.length} Verkaufsstellen mit Milch ab Hof im Umkreis von ${RADIUS_KM} km um ${place.name}${points[0] ? ` – die nächste liegt etwa ${(points[0].distance / 1000).toFixed(1).replace(".", ",")} km vom Ortsmittelpunkt entfernt` : ""}.`

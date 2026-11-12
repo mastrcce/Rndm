@@ -20,12 +20,12 @@ export default async function ImportsPage({ searchParams }: { searchParams: Prom
   const highlight = Number(sp.lauf);
   return (
     <div className="space-y-8">
-      <h1 className="text-3xl font-semibold">Importe & Datenquellen</h1>
-      {sp.fehler && <p className="rounded-xl bg-warn-bg px-4 py-2 text-sm text-warn-fg">{ERRORS[sp.fehler] ?? sp.fehler}</p>}
+      <h1 className="text-3xl font-medium">Importe & Datenquellen</h1>
+      {sp.fehler && <p className="rounded-2xl bg-warn-bg px-4 py-2 text-sm text-warn-fg">{ERRORS[sp.fehler] ?? sp.fehler}</p>}
 
       <section className="grid gap-4 lg:grid-cols-2">
         <Card className="p-5">
-          <h2 className="text-lg font-semibold">OpenStreetMap-Import</h2>
+          <h2 className="text-lg font-medium">OpenStreetMap-Import</h2>
           <p className="mt-1 text-sm text-muted">
             „Live“ fragt die Overpass-API ab (dauert 1–5 Minuten, benötigt Netzzugang zu overpass-api.de).
             „Mitgelieferter Abzug“ nutzt die Datei data/seed/osm-hofprodukte-de.json aus dem Repository.
@@ -42,7 +42,7 @@ export default async function ImportsPage({ searchParams }: { searchParams: Prom
           </form>
         </Card>
         <Card className="p-5">
-          <h2 className="text-lg font-semibold">Datei-Import (CSV / JSON / GeoJSON)</h2>
+          <h2 className="text-lg font-medium">Datei-Import (CSV / JSON / GeoJSON)</h2>
           <p className="mt-1 text-sm text-muted">Format siehe docs/IMPORT-FORMAT.md. Pflicht: Koordinaten. Datei-Importe deaktivieren keine bestehenden Einträge.</p>
           <form action={uploadImportFile} className="mt-4 grid gap-2 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
             <div>
@@ -84,7 +84,7 @@ export default async function ImportsPage({ searchParams }: { searchParams: Prom
       </Card>
 
       <section>
-        <h2 className="text-xl font-semibold">Importprotokolle</h2>
+        <h2 className="text-xl font-medium">Importprotokolle</h2>
         <ul className="mt-3 space-y-2">
           {runs.map((r) => (
             <li key={r.id}>
@@ -97,8 +97,8 @@ export default async function ImportsPage({ searchParams }: { searchParams: Prom
                   </span>
                 </summary>
                 <div className="border-t border-line px-4 py-3">
-                  <pre className="max-h-72 overflow-auto whitespace-pre-wrap rounded-xl bg-cream-50 p-3 text-xs">{r.log || "(kein Protokoll)"}</pre>
-                  <pre className="mt-2 overflow-auto rounded-xl bg-cream-50 p-3 text-xs">{JSON.stringify(r.stats, null, 2)}</pre>
+                  <pre className="max-h-72 overflow-auto whitespace-pre-wrap rounded-2xl bg-cream-50 p-3 text-xs">{r.log || "(kein Protokoll)"}</pre>
+                  <pre className="mt-2 overflow-auto rounded-2xl bg-cream-50 p-3 text-xs">{JSON.stringify(r.stats, null, 2)}</pre>
                 </div>
               </details>
             </li>

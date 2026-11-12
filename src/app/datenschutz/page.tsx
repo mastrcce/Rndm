@@ -6,9 +6,9 @@ export const metadata: Metadata = { title: "Datenschutz", alternates: { canonica
 export default function PrivacyPage() {
   return (
     <article className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
-      <h1 className="text-4xl font-semibold">Datenschutzerklärung</h1>
+      <h1 className="text-4xl font-medium">Datenschutzerklärung</h1>
       <Prose>
-        <p className="rounded-xl bg-warn-bg px-4 py-3 text-warn-fg">
+        <p className="rounded-2xl bg-warn-bg px-4 py-3 text-warn-fg">
           Entwurf – vor dem Livegang vom Betreiber zu prüfen und um Verantwortlichen, Hosting-Anbieter und Auftragsverarbeiter zu ergänzen.
         </p>
         <h2>Grundsatz</h2>

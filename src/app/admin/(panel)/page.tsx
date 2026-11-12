@@ -10,7 +10,7 @@ function Kpi({ label, value, href, tone }: { label: string; value: number | stri
   const inner = (
     <Card className={`p-4 ${tone === "warn" && Number(value) > 0 ? "border-wheat/60 bg-warn-bg" : ""}`}>
       <p className="text-xs font-medium text-muted">{label}</p>
-      <p className="mt-1 font-display text-3xl font-semibold tabular-nums text-forest-900">{typeof value === "number" ? value.toLocaleString("de-DE") : value}</p>
+      <p className="mt-1 font-display text-3xl font-medium tabular-nums text-forest-900">{typeof value === "number" ? value.toLocaleString("de-DE") : value}</p>
     </Card>
   );
   return href ? <Link href={href} className="block hover:opacity-90">{inner}</Link> : inner;
@@ -21,7 +21,7 @@ export default async function AdminHome() {
   const maxState = Math.max(...byState.map((x) => x.n), 1);
   return (
     <div className="space-y-8">
-      <h1 className="text-3xl font-semibold">Übersicht</h1>
+      <h1 className="text-3xl font-medium">Übersicht</h1>
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
         <Kpi label="Aktive Standorte" value={s.active} href="/admin/standorte" />
         <Kpi label="Rohmilch bestätigt" value={s.raw_confirmed} />
@@ -34,7 +34,7 @@ export default async function AdminHome() {
       </div>
 
       <section>
-        <h2 className="text-xl font-semibold">Fehlerhafte oder unvollständige Datensätze</h2>
+        <h2 className="text-xl font-medium">Fehlerhafte oder unvollständige Datensätze</h2>
         <div className="mt-3 grid grid-cols-2 gap-3 md:grid-cols-5">
           <Kpi label="Ohne Adresse" value={s.no_address} href="/admin/standorte?flag=no_address" />
           <Kpi label="Ohne Öffnungszeiten" value={s.no_hours} href="/admin/standorte?flag=no_opening_hours" />
@@ -46,13 +46,13 @@ export default async function AdminHome() {
 
       <div className="grid gap-6 lg:grid-cols-2">
         <Card className="p-5">
-          <h2 className="text-lg font-semibold">Nach Art</h2>
+          <h2 className="text-lg font-medium">Nach Art</h2>
           <ul className="mt-3 space-y-2 text-sm">
             {byType.map((t) => (
               <li key={t.location_type} className="flex justify-between"><span>{LOCATION_TYPE_LABELS[t.location_type as LocationType]}</span><span className="tabular-nums">{t.n}</span></li>
             ))}
           </ul>
-          <h2 className="mt-6 text-lg font-semibold">Nach Produkt</h2>
+          <h2 className="mt-6 text-lg font-medium">Nach Produkt</h2>
           <ul className="mt-3 space-y-2 text-sm">
             {byCategory.map((t) => (
               <li key={t.category} className="flex justify-between">
@@ -63,7 +63,7 @@ export default async function AdminHome() {
           </ul>
         </Card>
         <Card className="p-5">
-          <h2 className="text-lg font-semibold">Nach Bundesland</h2>
+          <h2 className="text-lg font-medium">Nach Bundesland</h2>
           <ul className="mt-3 space-y-1.5 text-sm">
             {byState.map((t) => (
               <li key={t.state} className="grid grid-cols-[170px_1fr_40px] items-center gap-2">
@@ -78,7 +78,7 @@ export default async function AdminHome() {
 
       <Card className="p-5">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold">Letzte Importe</h2>
+          <h2 className="text-lg font-medium">Letzte Importe</h2>
           <Link href="/admin/importe" className="text-sm text-forest-800 underline">Alle Importe</Link>
         </div>
         <ul className="mt-3 divide-y divide-line text-sm">

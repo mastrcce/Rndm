@@ -10,9 +10,9 @@ export const metadata: Metadata = { title: "Impressum", robots: { index: false }
 export default function ImpressumPage() {
   return (
     <article className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
-      <h1 className="text-4xl font-semibold">Impressum</h1>
+      <h1 className="text-4xl font-medium">Impressum</h1>
       <Prose>
-        <p className="rounded-xl bg-warn-bg px-4 py-3 text-warn-fg">
+        <p className="rounded-2xl bg-warn-bg px-4 py-3 text-warn-fg">
           Platzhalter: Die Angaben nach § 5 Digitale-Dienste-Gesetz (DDG) werden vom Betreiber vor dem Livegang ergänzt.
         </p>
         <h2>Angaben gemäß § 5 DDG</h2>

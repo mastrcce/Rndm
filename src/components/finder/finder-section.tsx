@@ -105,7 +105,7 @@ export function FinderSection({ initialBbox, title = "Alle Standorte auf der Kar
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <h2 className="text-2xl font-semibold sm:text-3xl">{title}</h2>
+            <h2 className="text-2xl font-medium sm:text-3xl">{title}</h2>
             <p className="mt-1 text-sm text-muted">
               {f.loading ? "Standorte werden geladen …" : `${filtered.length.toLocaleString("de-DE")} von ${f.points.length.toLocaleString("de-DE")} Standorten entsprechen deinen Filtern`}
               {f.origin && filters.radiusKm ? ` · im Umkreis von ${filters.radiusKm} km um ${f.origin.kind === "gps" ? "deinen Standort" : f.origin.label}` : ""}
@@ -144,15 +144,6 @@ export function FinderSection({ initialBbox, title = "Alle Standorte auf der Kar
             </div>
           </fieldset>
           <div className="flex flex-wrap items-center gap-2">
-            <div className="-mx-1 flex w-[calc(100%+0.5rem)] gap-2 overflow-x-auto px-1 pb-1 sm:w-auto sm:flex-wrap sm:overflow-visible sm:pb-0 [&>*]:shrink-0">
-              {LOCATION_TYPES.map((t) => (
-                <Chip key={t} active={filters.types.includes(t)} onClick={() => toggleType(t)}>
-                  <span dangerouslySetInnerHTML={{ __html: legendSvg(t) }} className="-ml-1 inline-flex" aria-hidden />
-                  {LOCATION_TYPE_PLURAL[t]}
-                </Chip>
-              ))}
-            </div>
-            <span className="mx-1 hidden h-6 w-px bg-line sm:block" aria-hidden />
             <label className="inline-flex h-9 items-center gap-2 rounded-full border border-line bg-white px-3 text-sm">
               <span className="text-muted">Umkreis</span>
               <select
@@ -176,7 +167,18 @@ export function FinderSection({ initialBbox, title = "Alle Standorte auf der Kar
             )}
           </div>
           {showMore && (
-            <div className="mt-3 grid gap-3 border-t border-line pt-3 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="mt-3 grid gap-4 border-t border-line pt-4 sm:grid-cols-2 lg:grid-cols-4">
+              <fieldset className="space-y-2 sm:col-span-2 lg:col-span-4">
+                <legend className="text-xs font-semibold uppercase tracking-wide text-sage-600">Art des Standorts</legend>
+                <div className="flex flex-wrap gap-2">
+                  {LOCATION_TYPES.map((t) => (
+                    <Chip key={t} active={filters.types.includes(t)} onClick={() => toggleType(t)}>
+                      <span dangerouslySetInnerHTML={{ __html: legendSvg(t) }} className="-ml-1 inline-flex" aria-hidden />
+                      {LOCATION_TYPE_PLURAL[t]}
+                    </Chip>
+                  ))}
+                </div>
+              </fieldset>
               <fieldset className="space-y-2">
                 <legend className="text-xs font-semibold uppercase tracking-wide text-sage-600">Verfügbarkeit</legend>
                 <Chip active={filters.open247} onClick={() => setFilters((s) => ({ ...s, open247: !s.open247 }))} title="Nur Standorte, für die 24/7 angegeben ist">
@@ -220,7 +222,7 @@ export function FinderSection({ initialBbox, title = "Alle Standorte auf der Kar
           )}
         </div>
 
-        {f.error && <p className="mt-3 rounded-xl bg-warn-bg px-4 py-3 text-sm text-warn-fg">{f.error}</p>}
+        {f.error && <p className="mt-3 rounded-2xl bg-warn-bg px-4 py-3 text-sm text-warn-fg">{f.error}</p>}
 
         {/* Liste + Karte */}
         <div className="mt-4 grid gap-4 lg:grid-cols-[400px_1fr]">
@@ -318,7 +320,7 @@ export function FinderSection({ initialBbox, title = "Alle Standorte auf der Kar
               onBoundsChange={f.setBounds}
               onSelect={f.setSelectedId}
             />
-            <div className="pointer-events-none absolute bottom-6 left-3 z-[500] hidden rounded-xl bg-white/90 px-3 py-2 text-xs shadow-soft backdrop-blur sm:block">
+            <div className="pointer-events-none absolute bottom-6 left-3 z-[500] hidden rounded-2xl bg-white/90 px-3 py-2 text-xs shadow-soft backdrop-blur sm:block">
               <div className="flex items-center gap-1.5"><span className="inline-block size-2.5 rounded-full bg-wheat ring-2 ring-white" /> Rohmilch laut Quelle bestätigt</div>
             </div>
           </div>

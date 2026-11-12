@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function RawMilkInfoPage() {
   return (
     <article className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
-      <h1 className="text-4xl font-semibold sm:text-5xl">Rohmilch: Wissen & Hinweise</h1>
+      <h1 className="text-4xl font-medium sm:text-5xl">Rohmilch: Wissen & Hinweise</h1>
       <SafetyNotice className="mt-8" />
       <Prose>
         <h2>Was ist Rohmilch?</h2>

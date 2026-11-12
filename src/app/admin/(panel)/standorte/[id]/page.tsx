@@ -30,7 +30,7 @@ export default async function EditLocationPage({ params, searchParams }: { param
     <div className="space-y-6">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-semibold">{l.name}</h1>
+          <h1 className="text-3xl font-medium">{l.name}</h1>
           <p className="mt-1 text-sm text-muted">
             <Link href={`/standort/${l.slug}`} className="underline" target="_blank">/standort/{l.slug}</Link> · Qualität {l.dataQualityScore}/100
             {!l.isActive && <Badge variant="warn" className="ml-2">inaktiv</Badge>}
@@ -44,19 +44,19 @@ export default async function EditLocationPage({ params, searchParams }: { param
           <form action={removeLocation.bind(null, id)}><Button variant="danger" size="sm">Löschen</Button></form>
         </div>
       </div>
-      {sp.gespeichert && <p className="rounded-xl bg-sage-100 px-4 py-2 text-sm">Änderungen gespeichert.</p>}
-      {sp.angelegt && <p className="rounded-xl bg-sage-100 px-4 py-2 text-sm">Standort angelegt.</p>}
+      {sp.gespeichert && <p className="rounded-2xl bg-sage-100 px-4 py-2 text-sm">Änderungen gespeichert.</p>}
+      {sp.angelegt && <p className="rounded-2xl bg-sage-100 px-4 py-2 text-sm">Standort angelegt.</p>}
       {extra.locked_fields.length > 0 && <p className="text-xs text-muted">Redaktionell gesperrte Felder: {extra.locked_fields.join(", ")}</p>}
       <LocationForm action={save} location={l} submitLabel="Speichern" />
 
       <Card className="p-5">
-        <h2 className="text-lg font-semibold">Quellen</h2>
+        <h2 className="text-lg font-medium">Quellen</h2>
         <ul className="mt-3 space-y-3 text-sm">
           {raw.map((r) => (
             <li key={`${r.source}${r.source_id}`}>
               <p className="font-medium">{r.source} · {r.source_id} {r.is_stale && <Badge variant="warn">veraltet</Badge>}</p>
               <details><summary className="cursor-pointer text-xs text-muted">Rohdaten anzeigen</summary>
-                <pre className="mt-2 max-h-64 overflow-auto rounded-xl bg-cream-50 p-3 text-xs">{JSON.stringify(r.raw, null, 2)}</pre>
+                <pre className="mt-2 max-h-64 overflow-auto rounded-2xl bg-cream-50 p-3 text-xs">{JSON.stringify(r.raw, null, 2)}</pre>
               </details>
             </li>
           ))}
@@ -64,7 +64,7 @@ export default async function EditLocationPage({ params, searchParams }: { param
       </Card>
 
       <Card className="p-5">
-        <h2 className="text-lg font-semibold">Änderungsprotokoll</h2>
+        <h2 className="text-lg font-medium">Änderungsprotokoll</h2>
         {changes.length === 0 ? <p className="mt-2 text-sm text-muted">Keine Änderungen.</p> : (
           <ul className="mt-3 divide-y divide-line text-sm">
             {changes.map((c) => (

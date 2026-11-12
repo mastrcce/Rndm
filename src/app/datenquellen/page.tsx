@@ -26,7 +26,7 @@ export default async function SourcesPage() {
   );
   return (
     <article className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
-      <h1 className="text-4xl font-semibold sm:text-5xl">Datenquellen & Lizenzen</h1>
+      <h1 className="text-4xl font-medium sm:text-5xl">Datenquellen & Lizenzen</h1>
       <div className="mt-8 overflow-hidden rounded-xl2 border border-line bg-white shadow-soft">
         <table className="w-full text-left text-sm">
           <thead className="bg-cream-50 text-xs uppercase tracking-wide text-muted">

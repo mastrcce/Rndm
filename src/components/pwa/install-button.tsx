@@ -55,7 +55,7 @@ export function IosInstructions({ onClose, inline = false }: { onClose?: () => v
     <div className="fixed inset-0 z-[2000] flex items-end justify-center bg-black/40 p-4 sm:items-center" role="dialog" aria-modal="true" aria-labelledby="ios-install-title" onClick={onClose}>
       <div className={cn("w-full max-w-sm rounded-xl2 bg-white p-5 shadow-lift")} onClick={(e) => e.stopPropagation()}>
         <div className="flex items-start justify-between gap-4">
-          <h2 id="ios-install-title" className="text-xl font-semibold">Auf dem iPhone installieren</h2>
+          <h2 id="ios-install-title" className="text-xl font-medium">Auf dem iPhone installieren</h2>
           <button onClick={onClose} className="rounded-full p-1 text-muted hover:bg-sage-100" aria-label="Schließen"><X className="size-5" /></button>
         </div>
         <div className="mt-4">{steps}</div>

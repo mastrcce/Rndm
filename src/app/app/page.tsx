@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function AppPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6">
-      <h1 className="text-4xl font-semibold sm:text-5xl">Der Rohmilch-Atlas als App</h1>
+      <h1 className="text-4xl font-medium sm:text-5xl">Der Rohmilch-Atlas als App</h1>
       <p className="mt-4 max-w-2xl text-lg text-muted">
         Leg den Rohmilch-Atlas auf deinen Startbildschirm – kostenlos, ohne App Store und ohne Konto.
         Er startet dann wie eine normale App im Vollbild.
@@ -27,7 +27,7 @@ export default function AppPage() {
         ].map(({ icon: Icon, title, text }) => (
           <Card key={title} className="p-5">
             <Icon className="size-6 text-sage-600" aria-hidden />
-            <h2 className="mt-3 text-lg font-semibold">{title}</h2>
+            <h2 className="mt-3 text-lg font-medium">{title}</h2>
             <p className="mt-1 text-sm text-muted">{text}</p>
           </Card>
         ))}
@@ -35,12 +35,12 @@ export default function AppPage() {
 
       <div className="mt-10 grid gap-4 md:grid-cols-2">
         <Card className="p-6">
-          <h2 className="text-xl font-semibold">iPhone & iPad (Safari)</h2>
+          <h2 className="text-xl font-medium">iPhone & iPad (Safari)</h2>
           <div className="mt-4"><IosInstructions inline /></div>
           <p className="mt-4 text-xs text-muted">Funktioniert nur in Safari (ab iOS 16.4 auch in anderen Browsern über „Teilen“).</p>
         </Card>
         <Card className="p-6">
-          <h2 className="text-xl font-semibold">Android (Chrome)</h2>
+          <h2 className="text-xl font-medium">Android (Chrome)</h2>
           <ol className="mt-4 list-decimal space-y-2 pl-5 text-sm">
             <li>Tippe oben auf <strong>App installieren</strong> – oder im Chrome-Menü <strong>⋮</strong> auf <strong>App installieren</strong> bzw. <strong>Zum Startbildschirm hinzufügen</strong>.</li>
             <li>Bestätige mit <strong>Installieren</strong>.</li>

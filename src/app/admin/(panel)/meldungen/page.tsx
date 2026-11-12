@@ -22,12 +22,12 @@ export default async function ModerationPage({ searchParams }: { searchParams: P
   );
   return (
     <div>
-      <h1 className="text-3xl font-semibold">Moderation</h1>
+      <h1 className="text-3xl font-medium">Moderation</h1>
       <div className="mt-3 flex gap-2 text-sm">
         <Link href="/admin/meldungen" className={status === "pending" ? "font-semibold underline" : "text-muted"}>Offen</Link>
         <Link href="/admin/meldungen?status=erledigt" className={status === "done" ? "font-semibold underline" : "text-muted"}>Erledigt</Link>
       </div>
-      {sp.fehler && <p className="mt-3 rounded-xl bg-warn-bg px-4 py-2 text-sm text-warn-fg">Übernahme fehlgeschlagen: {sp.fehler}</p>}
+      {sp.fehler && <p className="mt-3 rounded-2xl bg-warn-bg px-4 py-2 text-sm text-warn-fg">Übernahme fehlgeschlagen: {sp.fehler}</p>}
       {rows.length === 0 && <p className="mt-6 text-muted">Keine Einträge.</p>}
       <ul className="mt-4 space-y-3">
         {rows.map((r) => {
@@ -47,7 +47,7 @@ export default async function ModerationPage({ searchParams }: { searchParams: P
                     {fields.map(([k, v]) => (<Fragment key={k}><dt className="text-muted">{k}</dt><dd className="break-words">{String(v)}</dd></Fragment>))}
                   </dl>
                 )}
-                {r.message && <p className="mt-2 whitespace-pre-wrap rounded-xl bg-cream-50 p-3 text-sm">{r.message}</p>}
+                {r.message && <p className="mt-2 whitespace-pre-wrap rounded-2xl bg-cream-50 p-3 text-sm">{r.message}</p>}
                 {r.contact_email && <p className="mt-1 text-xs text-muted">Kontakt: {r.contact_email}</p>}
                 {r.reviewer_note && <p className="mt-1 text-xs text-muted">Notiz: {r.reviewer_note}</p>}
                 {r.status === "pending" && (
