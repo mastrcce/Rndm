@@ -7,7 +7,6 @@ import { LocationActions } from "@/components/location/location-actions";
 import { LocationImage } from "@/components/location/location-image";
 import { MiniMapClient } from "@/components/location/mini-map-client";
 import { OpeningHoursView } from "@/components/location/opening-hours-view";
-import { SafetyNotice } from "@/components/safety-notice";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CategoryIcon } from "@/components/category-icon";
@@ -171,7 +170,6 @@ export default async function LocationPage({ params }: Props) {
         </div>
       </header>
 
-      {l.categories.includes("milk") && <SafetyNotice className="mt-8" compact />}
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[1fr_340px]">
         <section aria-labelledby="details" className="rounded-xl2 border border-line bg-white px-5 py-2 shadow-soft sm:px-7">

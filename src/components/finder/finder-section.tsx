@@ -50,7 +50,7 @@ function Chip({ active, onClick, children, title }: { active: boolean; onClick: 
   );
 }
 
-export function FinderSection({ initialBbox, title = "Alle Standorte auf der Karte" }: { initialBbox?: [number, number, number, number] | null; title?: string }) {
+export function FinderSection({ initialBbox, title = "Alle Standorte auf der Karte", className }: { initialBbox?: [number, number, number, number] | null; title?: string; className?: string }) {
   const f = useFinder();
   const { filters, setFilters } = f;
   const [mobileView, setMobileView] = useState<"map" | "list">("map");
@@ -101,7 +101,7 @@ export function FinderSection({ initialBbox, title = "Alle Standorte auf der Kar
   const activeCount = countActiveFilters(filters);
 
   return (
-    <section id="karte" className="scroll-mt-20">
+    <section id="karte" className={cn("scroll-mt-20", className)}>
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>

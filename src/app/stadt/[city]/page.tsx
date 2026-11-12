@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import { FinderProvider } from "@/components/finder/finder-context";
 import { FinderSection } from "@/components/finder/finder-section";
 import { RegionList } from "@/components/region-list";
-import { SafetyNotice } from "@/components/safety-notice";
 import { getNearby, getPlaceBySlug } from "@/lib/locations";
 import { stateByName } from "@/lib/states";
 
@@ -54,7 +53,6 @@ export default async function CityPage({ params }: Props) {
             ? `${points.length} Verkaufsstellen mit Milch ab Hof im Umkreis von ${RADIUS_KM} km um ${place.name}${points[0] ? ` – die nächste liegt etwa ${(points[0].distance / 1000).toFixed(1).replace(".", ",")} km vom Ortsmittelpunkt entfernt` : ""}.`
             : `Im Umkreis von ${RADIUS_KM} km um ${place.name} ist derzeit keine Verkaufsstelle erfasst. Kennst du eine? Schlage sie vor!`}
         </p>
-        <SafetyNotice className="mt-8" compact />
       </section>
       <FinderSection initialBbox={bbox} title={`Karte: ${place.name} und Umgebung`} />
       <RegionList points={points} title={`Verkaufsstellen in und um ${place.name}`} />

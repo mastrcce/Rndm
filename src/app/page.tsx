@@ -5,7 +5,6 @@ import { FinderSection } from "@/components/finder/finder-section";
 import { SearchBox } from "@/components/finder/search-box";
 import { InstallButton } from "@/components/pwa/install-button";
 import { CategoryCards } from "@/components/category-cards";
-import { SafetyNotice } from "@/components/safety-notice";
 import { StatsGrid } from "@/components/stats";
 import { getStateCounts, getStats } from "@/lib/locations";
 import { EMPTY_STATS, safe } from "@/lib/server/safe";
@@ -67,11 +66,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <SafetyNotice className="mb-10" />
-      </div>
 
-      <FinderSection />
+      <FinderSection className="pt-12 sm:pt-16" />
 
       {/* Produkte */}
       <section className="mx-auto mt-20 max-w-7xl px-4 sm:px-6">

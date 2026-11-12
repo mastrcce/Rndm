@@ -14,10 +14,6 @@ export function Footer() {
             Verzeichnis von Milchautomaten, Hofläden und Verkaufsstellen mit Milch ab Hof in Deutschland.
             Alle Angaben ohne Gewähr – Verfügbarkeit und Öffnungszeiten bitte vor Ort bzw. beim Betrieb prüfen.
           </p>
-          <p className="mt-4 rounded-xl border border-cream-200/15 bg-white/5 px-4 py-3 text-sm text-cream-50">
-            <strong>Rohmilch vor dem Verzehr abkochen.</strong>{" "}
-            <Link href="/rohmilch" className="underline decoration-sage-400 underline-offset-2">Warum?</Link>
-          </p>
         </div>
         <div>
           <h2 className="font-sans text-xs font-semibold uppercase tracking-widest text-sage-300">Verzeichnis</h2>

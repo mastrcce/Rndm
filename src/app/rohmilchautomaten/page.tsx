@@ -3,7 +3,6 @@ import Link from "next/link";
 import { FinderProvider } from "@/components/finder/finder-context";
 import { FinderSection } from "@/components/finder/finder-section";
 import { SearchBox } from "@/components/finder/search-box";
-import { SafetyNotice } from "@/components/safety-notice";
 import { getStateCounts, getTopCities } from "@/lib/locations";
 import { safe } from "@/lib/server/safe";
 import { STATES } from "@/lib/states";
@@ -40,7 +39,6 @@ export default async function VendingOverview() {
             );
           })}
         </ul>
-        <SafetyNotice className="mt-10" />
       </section>
       <FinderSection title="Milch- und Verkaufsautomaten auf der Karte" />
       {cities.length > 0 && (

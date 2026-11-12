@@ -17,7 +17,7 @@ Dublettenprüfung und Moderation.
 
 Ein Standort kann mehrere Produkte haben. Kartoffeln u. Ä. werden bewusst nicht aufgenommen.
 
-> Rohmilch vor dem Verzehr abkochen. Die Website weist auf jeder Seite darauf hin.
+> Hinweise zum Abkochen von Rohmilch und zu den Hygienevorschriften stehen auf der Seite `/rohmilch` (in der Fußzeile verlinkt).
 
 ## Funktionen
 

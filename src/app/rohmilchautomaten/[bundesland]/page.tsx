@@ -5,7 +5,6 @@ import { FinderProvider } from "@/components/finder/finder-context";
 import { FinderSection } from "@/components/finder/finder-section";
 import { SearchBox } from "@/components/finder/search-box";
 import { RegionList } from "@/components/region-list";
-import { SafetyNotice } from "@/components/safety-notice";
 import { getPlaceBySlug, getPointsWhere, getTopCities } from "@/lib/locations";
 import { stateBySlug } from "@/lib/states";
 
@@ -66,7 +65,6 @@ export default async function StatePage({ params }: Props) {
             ))}
           </ul>
         )}
-        <SafetyNotice className="mt-8" compact />
       </section>
       <FinderSection initialBbox={bbox} title={`Karte: ${s.name}`} />
       <RegionList points={sorted} title={`Alle Standorte in ${s.name}`} />
