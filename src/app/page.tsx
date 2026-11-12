@@ -8,7 +8,7 @@ import { CategoryCards } from "@/components/category-cards";
 import { getStateCounts } from "@/lib/locations";
 import { safe } from "@/lib/server/safe";
 import { STATES } from "@/lib/states";
-import { siteUrl } from "@/lib/utils";
+import { jsonForScript, siteUrl } from "@/lib/utils";
 
 export const revalidate = 600;
 
@@ -25,7 +25,7 @@ export default async function HomePage() {
 
   return (
     <FinderProvider>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonForScript(jsonLd) }} />
       {/* Hero */}
       <section className="bg-sage-100">
         <div className="mx-auto max-w-3xl px-4 pb-12 pt-12 text-center sm:px-6 sm:pb-14 sm:pt-16">

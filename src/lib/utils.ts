@@ -30,3 +30,17 @@ export function navigationLinks(lat: number, lon: number, label?: string) {
     osm: `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}#map=17/${lat}/${lon}`,
   };
 }
+
+/**
+ * Serialisiert Daten für ein <script type="application/ld+json">.
+ * JSON.stringify allein lässt „</script>“ stehen – Werte aus OpenStreetMap oder Nutzerbeiträgen
+ * könnten das Script-Element sonst beenden und HTML einschleusen (gespeichertes XSS).
+ */
+export function jsonForScript(value: unknown): string {
+  return JSON.stringify(value)
+    .replace(/</g, "\\u003c")
+    .replace(/>/g, "\\u003e")
+    .replace(/&/g, "\\u0026")
+    .replace(/\u2028/g, "\\u2028")
+    .replace(/\u2029/g, "\\u2029");
+}

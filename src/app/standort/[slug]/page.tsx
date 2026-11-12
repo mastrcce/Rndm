@@ -24,7 +24,7 @@ import { formatDistance } from "@/lib/geo";
 import { getLocationBySlug, getNearby } from "@/lib/locations";
 import { stateByName } from "@/lib/states";
 import type { LocationDetail } from "@/lib/types";
-import { formatDate, formatPrice, navigationLinks, siteUrl } from "@/lib/utils";
+import { formatDate, formatPrice, jsonForScript, navigationLinks, siteUrl } from "@/lib/utils";
 
 export const revalidate = 3600;
 
@@ -116,7 +116,7 @@ export default async function LocationPage({ params }: Props) {
 
   return (
     <article className="mx-auto max-w-6xl px-4 pb-10 pt-6 sm:px-6">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd(l)) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonForScript(jsonLd(l)) }} />
       <nav aria-label="Brotkrumen" className="text-sm text-muted">
         <ol className="flex flex-wrap items-center gap-1.5">
           <li><Link href="/" className="hover:text-forest-800">Start</Link></li>
