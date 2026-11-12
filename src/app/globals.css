@@ -31,7 +31,8 @@
   --color-warn-bg: #fff6e0;
   --color-warn-fg: #7a4e00;
 
-  --shadow-soft: 0 1px 2px rgb(23 52 36 / 0.04);
+  /* Karten trennen sich über Rand und Tonstufe, nicht über Schatten */
+  --shadow-soft: 0 0 #0000;
   --shadow-lift: 0 2px 6px rgb(23 52 36 / 0.05), 0 12px 28px rgb(23 52 36 / 0.07);
   --radius-xl2: 1.75rem;
 }
@@ -59,6 +60,25 @@
   ::selection {
     @apply bg-sage-300 text-forest-950;
   }
+  :root {
+    accent-color: var(--color-forest-800);
+    caret-color: var(--color-forest-800);
+    scrollbar-color: var(--color-sage-300) transparent;
+  }
+  p, li, dd {
+    text-wrap: pretty;
+  }
+  h1, h2, h3 {
+    text-wrap: balance;
+  }
+  a {
+    text-underline-offset: 0.18em;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
   :focus-visible {
     @apply outline-2 outline-offset-2 outline-forest-700;
   }
@@ -70,7 +90,7 @@
   background: #e9eee4;
 }
 .leaflet-control-attribution {
-  font-size: 11px;
+  font-size: 12px;
   background: rgb(253 251 246 / 0.85) !important;
 }
 .leaflet-control-zoom a {
@@ -83,6 +103,16 @@
 }
 .rm-marker > div {
   transition: transform 0.15s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  /* Hervorhebung ohne Größenänderung, Farbe/Deckkraft bleiben als Feedback */
+  .rm-marker > div {
+    transition: opacity 0.15s ease;
+  }
+  .rm-marker.is-active > div {
+    transform: none;
+    opacity: 0.75;
+  }
 }
 .rm-marker.is-active > div {
   transform: scale(1.3);

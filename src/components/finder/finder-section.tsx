@@ -21,7 +21,6 @@ import {
   type SortMode,
 } from "@/lib/filter";
 import { formatDistance } from "@/lib/geo";
-import { isOpenAt } from "@/lib/opening-hours";
 import { cn } from "@/lib/utils";
 import { useFinder } from "./finder-context";
 import { legendSvg } from "./marker-icons";
@@ -60,12 +59,23 @@ export function FinderSection({ initialBbox, title = "Alle Standorte auf der Kar
   const favorites = useFavorites();
   const listRef = useRef<HTMLDivElement>(null);
 
+  // Die Öffnungszeiten-Bibliothek ist groß: erst laden, wenn „Jetzt geöffnet“ gewählt wird
+  const [ohLib, setOhLib] = useState<typeof import("@/lib/opening-hours") | null>(null);
+  useEffect(() => {
+    if (!filters.openNow || ohLib) return;
+    let alive = true;
+    import("@/lib/opening-hours").then((m) => alive && setOhLib(m));
+    return () => {
+      alive = false;
+    };
+  }, [filters.openNow, ohLib]);
   const openNowFn = useMemo(() => {
     if (!filters.openNow) return undefined;
     const now = new Date();
+    // Solange die Bibliothek lädt, gilt „unbekannt“ (Standorte werden kurz ausgeblendet)
     return (p: ResultPoint | { oh: string | null; lat: number; lon: number; state: string | null }) =>
-      isOpenAt(p.oh, { lat: p.lat, lon: p.lon, state: p.state }, now);
-  }, [filters.openNow]);
+      ohLib ? ohLib.isOpenAt(p.oh, { lat: p.lat, lon: p.lon, state: p.state }, now) : null;
+  }, [filters.openNow, ohLib]);
 
   const filtered = useMemo(
     () => applyFilters(f.points, filters, f.origin, openNowFn),
@@ -84,7 +94,7 @@ export function FinderSection({ initialBbox, title = "Alle Standorte auf der Kar
   useEffect(() => {
     if (!f.selectedId) return;
     const node = listRef.current?.querySelector(`[data-id="${f.selectedId}"]`);
-    node?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    node?.scrollIntoView({ block: "nearest", behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
   }, [f.selectedId]);
 
   const toggleCategory = (c: Category) =>
@@ -143,7 +153,7 @@ export function FinderSection({ initialBbox, title = "Alle Standorte auf der Kar
             <label className="inline-flex h-9 items-center gap-2 rounded-full border border-line bg-white px-3 text-sm">
               <span className="text-muted">Umkreis</span>
               <select
-                className="bg-transparent font-medium text-forest-900 focus:outline-none"
+                className="h-full bg-transparent font-medium text-forest-900 focus:outline-none"
                 value={filters.radiusKm ?? ""}
                 disabled={!f.origin}
                 title={f.origin ? undefined : "Erst Ort suchen oder Standort verwenden"}
@@ -227,10 +237,10 @@ export function FinderSection({ initialBbox, title = "Alle Standorte auf der Kar
               <p className="text-sm text-muted">
                 <strong className="font-semibold text-forest-900">{visible.length.toLocaleString("de-DE")}</strong> im Kartenausschnitt
               </p>
-              <label className="flex items-center gap-1 text-sm text-muted">
+              <label className="flex h-9 items-center gap-1 text-sm text-muted">
                 <ArrowUpDown className="size-3.5" aria-hidden />
                 <span className="sr-only">Sortierung</span>
-                <select value={f.sort} onChange={(e) => f.setSort(e.target.value as SortMode)} className="bg-transparent font-medium text-forest-900 focus:outline-none">
+                <select value={f.sort} onChange={(e) => f.setSort(e.target.value as SortMode)} className="h-full bg-transparent font-medium text-forest-900 focus:outline-none">
                   <option value="distance" disabled={!f.origin}>Entfernung{f.origin ? "" : " (Ort wählen)"}</option>
                   <option value="name">Name</option>
                   <option value="quality">Vollständigkeit</option>
@@ -283,12 +293,12 @@ export function FinderSection({ initialBbox, title = "Alle Standorte auf der Kar
                         onClick={() => favorites.toggle(p.id)}
                         aria-pressed={favorites.has(p.id)}
                         aria-label={favorites.has(p.id) ? "Aus Favoriten entfernen" : "Zu Favoriten hinzufügen"}
-                        className="rounded-full p-1.5 text-muted hover:bg-sage-100 hover:text-forest-800"
+                        className="-m-1.5 grid size-10 shrink-0 place-items-center rounded-full text-muted hover:bg-sage-100 hover:text-forest-800"
                       >
                         <Heart className={cn("size-4", favorites.has(p.id) && "fill-forest-800 text-forest-800")} />
                       </button>
                     </div>
-                    <Link href={`/standort/${p.slug}`} className="mt-1 inline-block pl-[30px] text-xs font-medium text-sage-600 hover:text-forest-800">
+                    <Link href={`/standort/${p.slug}`} className="ml-[22px] mt-0.5 inline-block rounded-full px-2 py-1.5 text-xs font-medium text-sage-600 hover:bg-sage-100 hover:text-forest-800">
                       Details ansehen →
                     </Link>
                   </li>

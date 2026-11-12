@@ -55,7 +55,7 @@ export function SearchBox({ size = "lg", scrollToMap = true, align = "start" }: 
   }
 
   function scroll() {
-    if (scrollToMap) document.getElementById("karte")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (scrollToMap) document.getElementById("karte")?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
   }
 
   function pick(p: PlaceResult) {
@@ -106,7 +106,7 @@ export function SearchBox({ size = "lg", scrollToMap = true, align = "start" }: 
             aria-expanded={open}
             aria-controls={listId}
             aria-autocomplete="list"
-            className={cn("min-w-0 flex-1 bg-transparent text-left text-ink placeholder:text-muted/70 focus:outline-none", big ? "text-base sm:text-lg" : "text-sm")}
+            className={cn("min-w-0 flex-1 bg-transparent text-left text-ink placeholder:text-muted focus:outline-none", big ? "text-base sm:text-lg" : "text-sm")}
           />
           {busy && <Loader2 className="size-4 animate-spin text-muted" aria-hidden />}
           {q && !busy && (

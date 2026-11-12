@@ -177,6 +177,7 @@ export default function FinderMap(props: Props) {
     if (!f) return;
     ready.current?.then(({ map }) => {
       if (f.bbox) map.fitBounds([[f.bbox[1], f.bbox[0]], [f.bbox[3], f.bbox[2]]], { padding: [20, 20], maxZoom: 13 });
+      else if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) map.setView([f.lat, f.lon], f.zoom ?? 12);
       else map.flyTo([f.lat, f.lon], f.zoom ?? 12, { duration: 0.8 });
     }).catch(() => {});
   }, [props.focus]);
