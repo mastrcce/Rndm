@@ -5,18 +5,15 @@ import { FinderSection } from "@/components/finder/finder-section";
 import { SearchBox } from "@/components/finder/search-box";
 import { InstallButton } from "@/components/pwa/install-button";
 import { CategoryCards } from "@/components/category-cards";
-import { getStateCounts, getStats } from "@/lib/locations";
-import { EMPTY_STATS, safe } from "@/lib/server/safe";
+import { getStateCounts } from "@/lib/locations";
+import { safe } from "@/lib/server/safe";
 import { STATES } from "@/lib/states";
-import { formatDate, siteUrl } from "@/lib/utils";
+import { siteUrl } from "@/lib/utils";
 
 export const revalidate = 600;
 
 export default async function HomePage() {
-  const [{ data: stats, ok }, { data: states }] = await Promise.all([
-    safe(getStats, EMPTY_STATS),
-    safe(getStateCounts, []),
-  ]);
+  const { data: states, ok } = await safe(getStateCounts, []);
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
@@ -37,27 +34,14 @@ export default async function HomePage() {
           <path d="M0 250c120-30 220-40 330-30s200 20 370-10v50H0z" fill="currentColor" opacity=".6" />
         </svg>
         <div className="mx-auto max-w-7xl px-4 pb-6 pt-14 sm:px-6 sm:pb-8 sm:pt-20">
-          <p className="inline-flex items-center gap-2 rounded-full border border-sage-300 bg-white/70 px-3 py-1 text-xs font-medium text-forest-800">
-            <span className="size-1.5 rounded-full bg-sage-500" /> Direkt vom Hof · ganz Deutschland
-          </p>
-          <h1 className="mt-5 max-w-3xl text-4xl font-medium leading-[1.05] sm:text-6xl">
+          <h1 className="max-w-3xl text-4xl font-medium leading-[1.05] sm:text-6xl">
             Finde frische Rohmilch in deiner Nähe.
           </h1>
-          <p className="mt-5 max-w-2xl text-lg leading-relaxed text-muted sm:text-xl">
-            Entdecke Rohmilchautomaten, Bauernhöfe und regionale Verkaufsstellen in ganz Deutschland –
-            auch für Eier, Honig, Fleisch und Käse direkt vom Hof.
-          </p>
-          <div className="mt-8 max-w-3xl">
+          <div className="mt-10 max-w-3xl">
             <SearchBox />
           </div>
           {!ok && (
             <p className="mt-6 text-sm text-warn-fg">Die Datenbank ist derzeit nicht erreichbar. Bitte später erneut versuchen.</p>
-          )}
-          {stats.lastImport && (
-            <p className="mt-8 text-xs text-muted">
-              Daten aus OpenStreetMap · Stand {formatDate(stats.lastImport)} ·{" "}
-              <Link href="/datenquellen" className="underline underline-offset-2">Quellen</Link>
-            </p>
           )}
         </div>
       </section>

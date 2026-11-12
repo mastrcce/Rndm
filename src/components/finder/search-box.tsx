@@ -153,7 +153,6 @@ export function SearchBox({ size = "lg", scrollToMap = true }: { size?: "lg" | "
             </button>
           </span>
         )}
-        <span className="text-xs text-muted">Dein Standort wird nur in deinem Browser verwendet und nicht gespeichert.</span>
       </div>
       {(message || locateError) && <p className="mt-2 text-sm text-warn-fg" role="status">{message ?? locateError}</p>}
     </div>

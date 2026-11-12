@@ -106,10 +106,6 @@ export function FinderSection({ initialBbox, title = "Alle Standorte auf der Kar
         <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
             <h2 className="text-2xl font-medium sm:text-3xl">{title}</h2>
-            <p className="mt-1 text-sm text-muted">
-              {f.loading ? "Standorte werden geladen …" : `${filtered.length.toLocaleString("de-DE")} von ${f.points.length.toLocaleString("de-DE")} Standorten entsprechen deinen Filtern`}
-              {f.origin && filters.radiusKm ? ` · im Umkreis von ${filters.radiusKm} km um ${f.origin.kind === "gps" ? "deinen Standort" : f.origin.label}` : ""}
-            </p>
           </div>
           <div className="flex gap-2 lg:hidden" role="tablist" aria-label="Ansicht">
             <Chip active={mobileView === "map"} onClick={() => setMobileView("map")}><MapIcon className="size-4" /> Karte</Chip>
