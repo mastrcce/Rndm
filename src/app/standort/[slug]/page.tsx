@@ -180,7 +180,7 @@ export default async function LocationPage({ params }: Props) {
               {l.address || cityLine ? <>{l.address && <>{l.address}<br /></>}{cityLine}{cityLine && <br />}{l.state}, Deutschland</> : NA}
             </Row>
             <Row label="GPS-Koordinaten">
-              <span className="font-mono">{l.latitude.toFixed(6)}, {l.longitude.toFixed(6)}</span>
+              <span className="tabular-nums">{l.latitude.toFixed(6)}, {l.longitude.toFixed(6)}</span>
             </Row>
             <Row label="Telefon" icon={Phone}>{l.phone ? <a className="text-forest-800 underline" href={`tel:${l.phone.replace(/[^\d+]/g, "")}`}>{l.phone}</a> : NA}</Row>
             <Row label="Website" icon={Globe}>

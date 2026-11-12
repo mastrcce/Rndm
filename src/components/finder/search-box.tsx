@@ -7,7 +7,7 @@ import type { PlaceResult } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { useFinder } from "./finder-context";
 
-export function SearchBox({ size = "lg", scrollToMap = true }: { size?: "lg" | "md"; scrollToMap?: boolean }) {
+export function SearchBox({ size = "lg", scrollToMap = true, align = "start" }: { size?: "lg" | "md"; scrollToMap?: boolean; align?: "start" | "center" }) {
   const { choosePlace, locate, locating, locateError, origin, setOrigin } = useFinder();
   const [q, setQ] = useState("");
   const [results, setResults] = useState<PlaceResult[]>([]);
@@ -100,13 +100,13 @@ export function SearchBox({ size = "lg", scrollToMap = true }: { size?: "lg" | "
               if (e.key === "ArrowUp") { e.preventDefault(); setActive((a) => Math.max(a - 1, 0)); }
               if (e.key === "Escape") setOpen(false);
             }}
-            placeholder="Stadt, Postleitzahl oder Adresse"
+            placeholder="Ort, PLZ oder Adresse"
             aria-label="Ort, Postleitzahl oder Adresse suchen"
             role="combobox"
             aria-expanded={open}
             aria-controls={listId}
             aria-autocomplete="list"
-            className={cn("min-w-0 flex-1 bg-transparent text-ink placeholder:text-muted/70 focus:outline-none", big ? "text-base sm:text-lg" : "text-sm")}
+            className={cn("min-w-0 flex-1 bg-transparent text-left text-ink placeholder:text-muted/70 focus:outline-none", big ? "text-base sm:text-lg" : "text-sm")}
           />
           {busy && <Loader2 className="size-4 animate-spin text-muted" aria-hidden />}
           {q && !busy && (
@@ -119,7 +119,7 @@ export function SearchBox({ size = "lg", scrollToMap = true }: { size?: "lg" | "
           </Button>
         </div>
         {open && results.length > 0 && (
-          <ul id={listId} role="listbox" className="absolute inset-x-0 top-full z-[1200] mt-2 overflow-hidden rounded-2xl border border-line bg-white shadow-lift">
+          <ul id={listId} role="listbox" className="absolute inset-x-0 top-full z-[1200] mt-2 overflow-hidden text-left rounded-2xl border border-line bg-white shadow-lift">
             {results.map((r, i) => (
               <li key={`${r.kind}-${r.label}-${i}`} role="option" aria-selected={i === active}>
                 <button
@@ -140,7 +140,7 @@ export function SearchBox({ size = "lg", scrollToMap = true }: { size?: "lg" | "
           </ul>
         )}
       </form>
-      <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm">
+      <div className={cn("mt-3 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm", align === "center" && "justify-center")}>
         <Button type="button" variant="secondary" onClick={() => { locate(); scroll(); }} disabled={locating}>
           {locating ? <Loader2 className="animate-spin" /> : <LocateFixed />}
           Standort verwenden

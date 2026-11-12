@@ -62,7 +62,7 @@ export default async function ImportsPage({ searchParams }: { searchParams: Prom
 
       <Card className="overflow-x-auto">
         <table className="w-full min-w-[640px] text-left text-sm">
-          <thead className="bg-cream-50 text-xs uppercase tracking-wide text-muted">
+          <thead className="bg-cream-50 text-sm text-muted">
             <tr><th className="px-4 py-2">Quelle</th><th className="px-4 py-2">Lizenz</th><th className="px-4 py-2">Priorität</th><th className="px-4 py-2">Letzter Lauf</th><th className="px-4 py-2">Status</th></tr>
           </thead>
           <tbody className="divide-y divide-line">

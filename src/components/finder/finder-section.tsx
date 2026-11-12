@@ -116,8 +116,8 @@ export function FinderSection({ initialBbox, title = "Alle Standorte auf der Kar
         {/* Filter */}
         <div className="mt-4 rounded-xl2 border border-line bg-white p-3 shadow-soft sm:p-4">
           <fieldset className="mb-3 border-b border-line pb-3">
-            <legend className="mb-2 text-xs font-semibold uppercase tracking-wide text-sage-600">Was suchst du?</legend>
-            <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 sm:flex-wrap sm:overflow-visible sm:pb-0 [&>*]:shrink-0">
+            <legend className="mb-2 text-sm font-medium text-forest-800">Was suchst du?</legend>
+            <div className="flex flex-wrap gap-2">
               {CATEGORIES.map((c) => {
                 const active = filters.categories.includes(c);
                 return (
@@ -153,7 +153,7 @@ export function FinderSection({ initialBbox, title = "Alle Standorte auf der Kar
                 {RADIUS_OPTIONS.map((r) => <option key={r} value={r}>{r} km</option>)}
               </select>
             </label>
-            <Button variant="ghost" size="sm" onClick={() => setShowMore((v) => !v)} aria-expanded={showMore} className="h-9">
+            <Button variant="ghost" size="sm" onClick={() => setShowMore((v) => !v)} aria-expanded={showMore} className="h-9 text-sm">
               <SlidersHorizontal /> Weitere Filter{activeCount ? ` (${activeCount})` : ""}
             </Button>
             {activeCount > 0 && (
@@ -165,7 +165,7 @@ export function FinderSection({ initialBbox, title = "Alle Standorte auf der Kar
           {showMore && (
             <div className="mt-3 grid gap-4 border-t border-line pt-4 sm:grid-cols-2 lg:grid-cols-4">
               <fieldset className="space-y-2 sm:col-span-2 lg:col-span-4">
-                <legend className="text-xs font-semibold uppercase tracking-wide text-sage-600">Art des Standorts</legend>
+                <legend className="text-sm font-medium text-forest-800">Art des Standorts</legend>
                 <div className="flex flex-wrap gap-2">
                   {LOCATION_TYPES.map((t) => (
                     <Chip key={t} active={filters.types.includes(t)} onClick={() => toggleType(t)}>
@@ -176,7 +176,7 @@ export function FinderSection({ initialBbox, title = "Alle Standorte auf der Kar
                 </div>
               </fieldset>
               <fieldset className="space-y-2">
-                <legend className="text-xs font-semibold uppercase tracking-wide text-sage-600">Verfügbarkeit</legend>
+                <legend className="text-sm font-medium text-forest-800">Verfügbarkeit</legend>
                 <Chip active={filters.open247} onClick={() => setFilters((s) => ({ ...s, open247: !s.open247 }))} title="Nur Standorte, für die 24/7 angegeben ist">
                   24/7 laut Angabe
                 </Chip>{" "}
@@ -185,7 +185,7 @@ export function FinderSection({ initialBbox, title = "Alle Standorte auf der Kar
                 </Chip>
               </fieldset>
               <fieldset className="space-y-2">
-                <legend className="text-xs font-semibold uppercase tracking-wide text-sage-600">Angebot</legend>
+                <legend className="text-sm font-medium text-forest-800">Angebot</legend>
                 <Chip active={filters.onlyRawConfirmed} onClick={() => setFilters((s) => ({ ...s, onlyRawConfirmed: !s.onlyRawConfirmed }))}>
                   <BadgeCheck className="size-4" /> Rohmilch bestätigt
                 </Chip>{" "}
@@ -194,7 +194,7 @@ export function FinderSection({ initialBbox, title = "Alle Standorte auf der Kar
                 </Chip>
               </fieldset>
               <fieldset className="space-y-2">
-                <legend className="text-xs font-semibold uppercase tracking-wide text-sage-600">Bezahlung (falls bekannt)</legend>
+                <legend className="text-sm font-medium text-forest-800">Bezahlung (falls bekannt)</legend>
                 {Object.entries(PAYMENT_FILTERS).map(([k, v]) => (
                   <span key={k}>
                     <Chip active={filters.payments.includes(k)} onClick={() => togglePayment(k)}>{v.label}</Chip>{" "}
@@ -202,7 +202,7 @@ export function FinderSection({ initialBbox, title = "Alle Standorte auf der Kar
                 ))}
               </fieldset>
               <fieldset className="space-y-2">
-                <legend className="text-xs font-semibold uppercase tracking-wide text-sage-600">Name oder Ort enthält</legend>
+                <legend className="text-sm font-medium text-forest-800">Name oder Ort enthält</legend>
                 <input
                   value={filters.text}
                   onChange={(e) => setFilters((s) => ({ ...s, text: e.target.value }))}
@@ -268,7 +268,7 @@ export function FinderSection({ initialBbox, title = "Alle Standorte auf der Kar
                         <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
                           <Badge variant="outline">{LOCATION_TYPE_LABELS[p.type]}</Badge>
                           {p.cat.map((c) => (
-                            <span key={c} title={CATEGORY_LABELS[c]} className="inline-flex size-6 items-center justify-center rounded-full bg-cream-100 text-forest-800">
+                            <span key={c} title={CATEGORY_LABELS[c]} className="inline-flex size-5 items-center justify-center text-forest-700">
                               <CategoryIcon category={c} className="size-3.5" />
                               <span className="sr-only">{CATEGORY_LABELS[c]}</span>
                             </span>
@@ -316,7 +316,7 @@ export function FinderSection({ initialBbox, title = "Alle Standorte auf der Kar
               onBoundsChange={f.setBounds}
               onSelect={f.setSelectedId}
             />
-            <div className="pointer-events-none absolute bottom-6 left-3 z-[500] hidden rounded-2xl bg-white/90 px-3 py-2 text-xs shadow-soft backdrop-blur sm:block">
+            <div className="pointer-events-none absolute bottom-6 left-3 z-[500] hidden rounded-2xl bg-white px-3 py-2 text-xs sm:block">
               <div className="flex items-center gap-1.5"><span className="inline-block size-2.5 rounded-full bg-wheat ring-2 ring-white" /> Rohmilch laut Quelle bestätigt</div>
             </div>
           </div>

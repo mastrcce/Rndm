@@ -12,11 +12,11 @@ export function popupHtml(p: ResultPoint): string {
   const raw = !p.cat.includes("milk")
     ? ""
     : p.raw === "confirmed"
-    ? `<span style="color:#1f4d33;font-weight:600">✓ ${esc(RAW_MILK_LABELS.confirmed)}</span>`
+    ? `<span style="color:#1f4d33;font-weight:600">${esc(RAW_MILK_LABELS.confirmed)}</span>`
     : `<span style="color:#5c6a61">${esc(RAW_MILK_LABELS[p.raw])}</span>`;
   return `
   <div style="min-width:220px;max-width:260px">
-    <div style="font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:#6a8456;font-weight:600">${esc(LOCATION_TYPE_LABELS[p.type])}${p.distance != null ? ` · ${formatDistance(p.distance)}` : ""}</div>
+    <div style="font-size:13px;color:#4f6a40;font-weight:600">${esc(LOCATION_TYPE_LABELS[p.type])}${p.distance != null ? ` · ${formatDistance(p.distance)}` : ""}</div>
     <div style="font-family:var(--font-display);font-size:17px;font-weight:600;color:#173424;margin:2px 0 6px">${esc(p.name)}</div>
     <div style="color:#1c2420">${addrLine ? esc(addrLine) : '<span style="color:#5c6a61">Adresse: Keine Angabe</span>'}</div>
     <div style="margin-top:4px;color:#1c2420">${p.oh ? `<b>Öffnungszeiten:</b> ${esc(p.oh === "24/7" ? "24/7 (laut Angabe)" : p.oh)}` : '<span style="color:#5c6a61">Öffnungszeiten: Keine Angabe</span>'}</div>

@@ -61,7 +61,7 @@ export default async function AdminLocations({ searchParams }: { searchParams: S
       </form>
       <div className="mt-4 overflow-x-auto rounded-xl2 border border-line bg-white">
         <table className="w-full min-w-[720px] text-left text-sm">
-          <thead className="bg-cream-50 text-xs uppercase tracking-wide text-muted">
+          <thead className="bg-cream-50 text-sm text-muted">
             <tr><th className="px-3 py-2">Name</th><th className="px-3 py-2">Ort</th><th className="px-3 py-2">Art</th><th className="px-3 py-2">Qualität</th><th className="px-3 py-2">Hinweise</th></tr>
           </thead>
           <tbody className="divide-y divide-line">
@@ -73,7 +73,7 @@ export default async function AdminLocations({ searchParams }: { searchParams: S
                   {r.locked_fields.length > 0 && <Badge variant="outline" className="ml-2">redigiert</Badge>}
                 </td>
                 <td className="px-3 py-2 text-muted">{r.city ?? "–"}{r.state ? `, ${r.state}` : ""}</td>
-                <td className="px-3 py-2">{LOCATION_TYPE_LABELS[r.location_type]}{r.raw_milk_status === "confirmed" ? " ✓" : ""}</td>
+                <td className="px-3 py-2">{LOCATION_TYPE_LABELS[r.location_type]}{r.raw_milk_status === "confirmed" ? " · Rohmilch bestätigt" : ""}</td>
                 <td className="px-3 py-2 tabular-nums">{r.data_quality_score}</td>
                 <td className="px-3 py-2 text-xs text-muted">{r.quality_flags.filter((f) => f !== "no_city").map((f) => FLAGS[f] ?? f).join(", ")}</td>
               </tr>

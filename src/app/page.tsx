@@ -27,18 +27,13 @@ export default async function HomePage() {
     <FinderProvider>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       {/* Hero */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,var(--color-sage-200),transparent_60%),radial-gradient(ellipse_at_bottom_left,var(--color-cream-200),transparent_55%)]" />
-        <svg className="absolute -right-24 bottom-0 -z-10 hidden h-72 w-[46rem] text-sage-300/50 md:block" viewBox="0 0 700 260" fill="none" aria-hidden>
-          <path d="M0 220c90-40 170-60 260-50s170 40 260 20 120-60 180-60v130H0z" fill="currentColor" />
-          <path d="M0 250c120-30 220-40 330-30s200 20 370-10v50H0z" fill="currentColor" opacity=".6" />
-        </svg>
-        <div className="mx-auto max-w-7xl px-4 pb-6 pt-14 sm:px-6 sm:pb-8 sm:pt-20">
-          <h1 className="max-w-3xl text-4xl font-medium leading-[1.05] sm:text-6xl">
+      <section className="bg-sage-100">
+        <div className="mx-auto max-w-3xl px-4 pb-12 pt-12 text-center sm:px-6 sm:pb-14 sm:pt-16">
+          <h1 className="text-[1.75rem] font-medium leading-[1.1] sm:text-6xl sm:leading-[1.05]">
             Finde frische Rohmilch in deiner Nähe.
           </h1>
-          <div className="mt-10 max-w-3xl">
-            <SearchBox />
+          <div className="mt-8 sm:mt-10">
+            <SearchBox align="center" />
           </div>
           {!ok && (
             <p className="mt-6 text-sm text-warn-fg">Die Datenbank ist derzeit nicht erreichbar. Bitte später erneut versuchen.</p>
@@ -46,8 +41,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-
-      <FinderSection className="pt-10 sm:pt-12" />
+      <FinderSection className="pt-8 sm:pt-10" />
 
       {/* Produkte */}
       <section className="mx-auto mt-20 max-w-7xl px-4 sm:px-6">
@@ -75,7 +69,7 @@ export default async function HomePage() {
 
       {/* App */}
       <section className="mx-auto mt-20 max-w-7xl px-4 sm:px-6">
-        <div className="flex flex-col items-start justify-between gap-6 rounded-xl2 bg-forest-900 p-8 text-cream-50 shadow-lift sm:flex-row sm:items-center sm:p-10">
+        <div className="flex flex-col items-start justify-between gap-6 rounded-xl2 bg-forest-900 p-8 text-cream-50 sm:flex-row sm:items-center sm:p-10">
           <div>
             <h2 className="text-2xl font-medium text-cream-50 sm:text-3xl">Rohmilch-Atlas als App</h2>
             <p className="mt-2 max-w-xl text-cream-200/90">

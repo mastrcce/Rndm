@@ -16,8 +16,8 @@ export function CategoryCards({ counts }: { counts?: Partial<Record<Category, nu
       {CATEGORIES.map((c) => (
         <li key={c}>
           <Link href={`/${CATEGORY_SLUGS[c]}`} className="group flex h-full flex-col rounded-xl2 border border-line bg-white p-4 shadow-soft transition hover:-translate-y-0.5 hover:border-sage-300 hover:shadow-lift">
-            <span className="grid size-10 place-items-center rounded-full bg-sage-100 text-forest-800 group-hover:bg-forest-800 group-hover:text-cream-50">
-              <CategoryIcon category={c} className="size-5" />
+            <span className="text-forest-700">
+              <CategoryIcon category={c} className="size-6" />
             </span>
             <span className="mt-3 font-display text-lg font-medium text-forest-900">{CATEGORY_LABELS[c]}</span>
             <span className="mt-0.5 text-xs text-muted">{TEXT[c]}</span>

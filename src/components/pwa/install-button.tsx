@@ -35,17 +35,14 @@ export function InstallButton({ className, variant = "secondary" }: { className?
 
 export function IosInstructions({ onClose, inline = false }: { onClose?: () => void; inline?: boolean }) {
   const steps = (
-    <ol className="space-y-3 text-sm">
-      <li className="flex items-start gap-3">
-        <span className="grid size-7 shrink-0 place-items-center rounded-full bg-sage-100 font-semibold text-forest-900">1</span>
+    <ol className="list-decimal space-y-2 pl-5 text-sm marker:text-muted">
+      <li>
         <span>Tippe in Safari unten auf <strong>Teilen</strong> <Share className="inline size-4 align-text-bottom" aria-label="Teilen-Symbol" />.</span>
       </li>
-      <li className="flex items-start gap-3">
-        <span className="grid size-7 shrink-0 place-items-center rounded-full bg-sage-100 font-semibold text-forest-900">2</span>
+      <li>
         <span>Wähle <strong>Zum Home-Bildschirm</strong> <SquarePlus className="inline size-4 align-text-bottom" aria-hidden /> (ggf. etwas nach unten scrollen).</span>
       </li>
-      <li className="flex items-start gap-3">
-        <span className="grid size-7 shrink-0 place-items-center rounded-full bg-sage-100 font-semibold text-forest-900">3</span>
+      <li>
         <span>Tippe auf <strong>Hinzufügen</strong>. Der Rohmilch-Atlas erscheint als App-Symbol.</span>
       </li>
     </ol>

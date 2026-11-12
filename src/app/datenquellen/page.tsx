@@ -29,7 +29,7 @@ export default async function SourcesPage() {
       <h1 className="text-4xl font-medium sm:text-5xl">Datenquellen & Lizenzen</h1>
       <div className="mt-8 overflow-hidden rounded-xl2 border border-line bg-white shadow-soft">
         <table className="w-full text-left text-sm">
-          <thead className="bg-cream-50 text-xs uppercase tracking-wide text-muted">
+          <thead className="bg-cream-50 text-sm text-muted">
             <tr><th className="px-4 py-3">Quelle</th><th className="px-4 py-3">Standorte</th><th className="px-4 py-3">Lizenz</th><th className="px-4 py-3">Letzter Abgleich</th></tr>
           </thead>
           <tbody className="divide-y divide-line">

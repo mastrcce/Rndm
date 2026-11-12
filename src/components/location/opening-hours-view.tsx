@@ -37,10 +37,10 @@ export function OpeningHoursView({ value, lat, lon, state }: { value: string | n
           </tbody>
         </table>
       ) : (
-        <p className="font-mono text-sm">{value}</p>
+        <p className="text-sm">{value}</p>
       )}
       <p className="mt-2 text-xs text-muted">
-        Originalangabe: <code className="rounded bg-cream-100 px-1">{value}</code> · ohne Gewähr, nicht vor Ort geprüft.
+        Originalangabe: „{value}“ · ohne Gewähr, nicht vor Ort geprüft.
       </p>
     </div>
   );
