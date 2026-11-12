@@ -35,7 +35,7 @@ export function Header() {
             Rohmilch<span className="text-sage-600">-Atlas</span>
           </span>
         </Link>
-        <nav className="hidden items-center gap-1 md:flex" aria-label="Hauptnavigation">
+        <nav className="hidden items-center gap-1 lg:flex" aria-label="Hauptnavigation">
           {NAV.map((n) => (
             <Link key={n.href} href={n.href} className={cn("rounded-full px-3 py-2 text-sm text-forest-900 hover:bg-sage-100", pathname === n.href && "bg-sage-100 font-medium")}>
               {n.label}
@@ -45,12 +45,12 @@ export function Header() {
             <Heart className="size-4" /> Favoriten
           </Link>
         </nav>
-        <button className="rounded-full p-2 text-forest-900 hover:bg-sage-100 md:hidden" onClick={() => setOpen((o) => !o)} aria-expanded={open} aria-label="Menü">
+        <button className="rounded-full p-2 text-forest-900 hover:bg-sage-100 lg:hidden" onClick={() => setOpen((o) => !o)} aria-expanded={open} aria-label="Menü">
           {open ? <X className="size-5" /> : <Menu className="size-5" />}
         </button>
       </div>
       {open && (
-        <nav className="border-t border-line bg-cream-50 px-4 py-3 md:hidden" aria-label="Mobile Navigation">
+        <nav className="border-t border-line bg-cream-50 px-4 py-3 lg:hidden" aria-label="Mobile Navigation">
           {[...NAV, { href: "/favoriten", label: "Favoriten" }].map((n) => (
             <Link key={n.href} href={n.href} className="block rounded-xl px-3 py-3 text-forest-900 hover:bg-sage-100">
               {n.label}
